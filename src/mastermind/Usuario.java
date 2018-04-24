@@ -1,10 +1,11 @@
 package mastermind;
 
+import java.util.LinkedHashMap;
+
 public abstract class Usuario {
 	//Clase comun de jugador y maquina
-
-	protected abstract Combinacion crearCombinacionSecreta(int color);
+	LinkedHashMap<Integer, Integer> mapaComparacion = new LinkedHashMap<Integer, Integer>();
+	protected abstract Combinacion crearCombinacionSecreta();
 	protected abstract void rellenarCombinacion();
-	protected abstract Combinacion devolverResultado(Combinacion combinacion);
 	
 }

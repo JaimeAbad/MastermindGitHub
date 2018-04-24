@@ -1,5 +1,6 @@
 package mastermind;
 
+import java.util.ArrayList;
 
 public class Jugador extends Usuario{
 
@@ -40,9 +41,14 @@ public class Jugador extends Usuario{
 	protected void rellenarCombinacion() {
 		
 		Combinacion combinacion = new Combinacion(dificultad);
+		ArrayList<Integer> listaColoresCombinacion = new ArrayList<Integer>();
+		
+		System.out.println("0. Negro \n1. Blanco \n2. Rojo \n3. Verde \n4. Amarillo \n5. Azul \n6. Morado \n7. Celeste\n");
 		do {
 			System.out.println("Introduce un color para la posicion" + i + ":");
 			color = Teclado.leerEntero();
+			//vamos a rellenar la lista, la cual sera como una combinacion pero posicion a posicion, no como el objeto combinacion en conjunto
+			listaColoresCombinacion.add(color);
 			combinacion.añadirFicha(color);
 			i++;
 		}while(i<dificultad.getCasilla());
@@ -50,25 +56,45 @@ public class Jugador extends Usuario{
 		tablero.añadirCombinacion(combinacion);
 		
 	}
-	
-	protected Combinacion crearCombinacionSecreta(int color) {
+	//devuelve la combinacion para podeer metersela al tablero, la de arriba no porque el mismo metodo la pasa al tablero
+	protected Combinacion crearCombinacionSecreta() {
 		
 		Combinacion combinacion = new Combinacion(dificultad);
 		do {
 			System.out.println("Posicion: " + i + " Color :");
 			color = Teclado.leerEntero();
+			//añadimos el color al mapa para poder recorrer el mapa con el contains en el obtenerResultado
+			mapaComparacion.put(i, color);
+			//añadimos el color a la combinacion
 			combinacion.añadirFicha(color);
 			i++;
 		}while(i<dificultad.getCasilla());
 		
 		return combinacion;
 	}
-	
-	protected Combinacion devolverResultado(Combinacion combinacion) {
+	//la combinacion que recibe es el intento de la maquina
+	protected void obtenerResultado(Combinacion combinacion/*LinkedHashMap<Integer, Integer> mapaComparacion*/) {
 		/*negro: color y posicion correctos
 		 * blanco: color correcto
 		 * rojo: ni color ni posicion*/
-		return combinacion;
+		System.out.println("Rellena la combinacion de aciertos para la maquina:\n "
+				+ "	0 - Negro: Posicion y color correctos\n"
+				+ "	1 - Blanco: Solo color correcto\n"
+				+ "	2 - Rojo: Ni color ni posicion correctos");
+		
+		do {
+			System.out.println("Posicion: " + i + " Color :");
+			color = Teclado.leerEntero();
+			if(color>=3) {
+				System.out.println("Posicion: " + i + " Color :");
+				color = Teclado.leerEntero();
+			}else{
+				combinacion.añadirFicha(color);
+				i++;
+			}
+			
+		}while(i<dificultad.getCasilla());
+		tablero.añadirRespuesta(combinacion);
 	}
 	
 //	public static void main(String[] args) {

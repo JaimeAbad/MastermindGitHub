@@ -2,7 +2,7 @@ package mastermind;
 
 import java.util.Arrays;
 
-public class Combinacion {
+public class Combinacion /*implements Dibujable*/{
 
 
 	private Ficha[] combinacion;
@@ -40,9 +40,12 @@ public class Combinacion {
 			
 		return resultado;
 	}
-	//IMPORTANTE
-	/*en jugador crear una instancia de combinacion, y hacerle el combinacion.añadirFicha[] para introducir en la combinacion la ficha que 
-	 * haya elegido el jugador*/
+	//cuando añada la interfaz dibujable
+//	public void dibujar() {
+//		for(int i =0; i<combinacion.length;i++) {
+//			combinacion[i].dibujar();
+//		}
+//	}
 	
 	
 	
