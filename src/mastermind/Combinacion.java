@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class Combinacion /*implements Dibujable*/{
 
 
-	private Ficha[] combinacion;
+	Ficha[] combinacion;
 	private Ficha f ;
 	private int pos = 0;
 	Dificultad dificultad;
@@ -26,7 +26,7 @@ public class Combinacion /*implements Dibujable*/{
 		if(pos<dificultad.getCasilla()) {
 			pos++;
 		}else {
-			
+			System.out.println("La combinación está completa.");
 		}
 		
 		return combinacion;

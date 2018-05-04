@@ -43,10 +43,12 @@ public class Ficha extends Constantes /*implements Dibujable*/{
 
 	public void setColor(String color) {
 		this.color = color;
+		
 	}
 	
 	public String toString() {
-		return String.format("%s", color);
+		return String.format("%s%s", color, fichasFacilMedio);
+		
 	}
 	
 	//interfaz

@@ -31,10 +31,6 @@ public class Partida {
 			maquina2 = new Maquina(dificultad);
 			maquina1 = new Maquina(dificultad);
 		}
-	
-		
-		
-		
 		
 	}
 
@@ -45,9 +41,12 @@ public class Partida {
 	}
 	
 	
-//	public static void main(String[] args) {
-////
-////		Menu partida = new Menu();
+	public static void main(String[] args) {
+		
+		
+		/*aqui hacer la llamada a los metodos correspondiente, es decir, crear la partida*/
+
+//		Menu partida = new Menu();
 //
 //		
 //		/*NOTA IMPORTANTE: NO HACER LOS NEW AQUI, YA QUE SE HACEN EN LA PARTIDA
@@ -68,6 +67,6 @@ public class Partida {
 //		 * Maquina maquina1 = new Maquina();
 //		 * Maquina maquina2 = new Maquina();
 //		 * Partida partida = new Partida(d, el objeto que se pase aqui será el que inicie la jugada);*/
-//	}
+	}
 
 }

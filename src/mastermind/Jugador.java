@@ -34,10 +34,7 @@ public class Jugador extends Usuario{
 	//IMPORTANTE
 	/*la diferencia entre rellenarCombinacion y crearCombinacionSecreta es que el rellenar lo que hae es crear una combinacion 
 	 * y pasarla al metodo añadir combinacion del tablero, que la introducira en el arrayList;
-	 * Mientras que en el crear, solo la creara y la devolvera ya que nos hara falta para pasarsela al tablero
-	 * 
-	 * 
-	 * APARTE: mirar donde hacer el mapa */
+	 * Mientras que en el crear, solo la creara y la devolvera ya que nos hara falta para pasarsela al tablero */
 	protected void rellenarCombinacion() {
 		
 		Combinacion combinacion = new Combinacion(dificultad);
@@ -47,8 +44,10 @@ public class Jugador extends Usuario{
 		do {
 			System.out.println("Introduce un color para la posicion" + i + ":");
 			color = Teclado.leerEntero();
-			//vamos a rellenar la lista, la cual sera como una combinacion pero posicion a posicion, no como el objeto combinacion en conjunto
-			listaColoresCombinacion.add(color);
+			//vamos a rellenar la lista, la cual sera como una combinacion pero posicion a posicion
+			//no como el objeto combinacion en conjunto
+			//es decir hay una lista para el conjunto de la combinacion y otra que guarda cada color por separado
+			listaColoresCombinacion.add(i, color);
 			combinacion.añadirFicha(color);
 			i++;
 		}while(i<dificultad.getCasilla());

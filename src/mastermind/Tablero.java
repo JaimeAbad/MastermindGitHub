@@ -3,7 +3,7 @@ package mastermind;
 import java.util.ArrayList;
 
 
-public class Tablero /*implements Dibujable*/{
+public class Tablero implements Dibujable{
 	
 	Dificultad dificultad;
 	Combinacion combinacion, combinacionSecreta;
@@ -28,7 +28,13 @@ public class Tablero /*implements Dibujable*/{
 
 	
 	public String toString() {
-		return String.format("%s", listaIntentos);
+		return String.format("%s%s", listaIntentos,listaResultados);
+	}
+
+
+	@Override
+	public void dibujar() {
+		//dibujar todas las fichas posibles y luego las combinaciones y sus resultados
 	}
 
 	
