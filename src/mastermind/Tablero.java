@@ -34,7 +34,8 @@ public class Tablero implements Dibujable{
 
 	@Override
 	public void dibujar() {
-		//dibujar todas las fichas posibles y luego las combinaciones y sus resultados
+		//dibujar todas las fichas posibles en esa partida y luego las combinaciones(con la lista) y sus resultados
+		System.out.printf("%s | %s", listaIntentos, listaResultados);
 	}
 
 	

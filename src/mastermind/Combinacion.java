@@ -2,12 +2,11 @@ package mastermind;
 
 import java.util.Arrays;
 
-public class Combinacion /*implements Dibujable*/{
+public class Combinacion implements Dibujable{
 
 
 	Ficha[] combinacion;
 	private Ficha f ;
-	private int pos = 0;
 	Dificultad dificultad;
 	
 	Combinacion(Dificultad dificultad){
@@ -17,16 +16,19 @@ public class Combinacion /*implements Dibujable*/{
 	//se pedira por teclado el color que se qiere introducir en la 1 posicion, los colores estan en una lista del 1 al 10
 	//este metodo añade la ficha que se e introduzca a la posicion que toque
 	public Ficha[] añadirFicha(int color) {
-		
+		boolean ocupada = false;
 		f = new Ficha(dificultad, color);
 		/*trampa para que no me devuelva el hashcode*/
 		//System.out.println(f.getColor());
 		
-		combinacion[pos] = f;
-		if(pos<dificultad.getCasilla()) {
-			pos++;
-		}else {
-			System.out.println("La combinación está completa.");
+		for(int i=0;i<dificultad.getCasilla();i++) {//recorre la combinacion y donde no halla color lo añade
+			if(ocupada==false) {
+				combinacion[i] = f;
+				ocupada=true;
+			}else {
+				
+			}
+			
 		}
 		
 		return combinacion;
@@ -40,12 +42,15 @@ public class Combinacion /*implements Dibujable*/{
 			
 		return resultado;
 	}
-	//cuando añada la interfaz dibujable
-//	public void dibujar() {
-//		for(int i =0; i<combinacion.length;i++) {
-//			combinacion[i].dibujar();
-//		}
-//	}
+	//recorre la combinacion y llama al dibujar de cada ficha
+	public void dibujar() {
+		for(int i = 0; i<dificultad.getCasilla();i++) {
+			if(combinacion[i]!= null) {
+				System.out.printf("%s ",combinacion[i].getColor());
+			}
+			
+		}
+	}
 	
 	
 	
@@ -95,14 +100,24 @@ public class Combinacion /*implements Dibujable*/{
 	
 	//MAIN PRUEBAS
 //	public static void main(String[] args) {
-//		//Combinacion c = new Combinacion();
-//		//System.out.println(c);
-//		Combinacion combinacion = new Combinacion(Dificultad.INDIVIDUAL);
-////		for(int i=0;i<combinacion.combinacion.length;i++) {
-//		int i=6;
-//			combinacion.añadirFicha(i);
-//			System.out.println(combinacion);
-////		}
+////		//Combinacion c = new Combinacion();
+////		//System.out.println(c);
+////		Combinacion combinacion = new Combinacion(Dificultad.INDIVIDUAL);
+//////		for(int i=0;i<combinacion.combinacion.length;i++) {
+////		int i=6;
+////			combinacion.añadirFicha(i);
+////			System.out.println(combinacion);
+//////		}
+////		
+//
+//		Dificultad f;
+//		f = Dificultad.INDIVIDUAL;
+//		Combinacion c = new Combinacion(f);
+//			
+//		for(int i=0;i<f.getCasilla();i++) {
+//			c.añadirFicha(i);
+//			c.dibujar();
+//		}
 //		
 //		
 //	}

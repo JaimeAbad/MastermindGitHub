@@ -11,6 +11,7 @@ public class Jugador extends Usuario{
 	Combinacion combinacion;*/
 	Tablero tablero;
 	Dificultad dificultad;
+	ArrayList<Integer> listaColoresCombinacion = new ArrayList<Integer>();
 	
 	//tambien habra que crear el hashMap para comparar la combinacion con la combinacion secreta
 	
@@ -38,7 +39,6 @@ public class Jugador extends Usuario{
 	protected void rellenarCombinacion() {
 		
 		Combinacion combinacion = new Combinacion(dificultad);
-		ArrayList<Integer> listaColoresCombinacion = new ArrayList<Integer>();
 		
 		System.out.println("0. Negro \n1. Blanco \n2. Rojo \n3. Verde \n4. Amarillo \n5. Azul \n6. Morado \n7. Celeste\n");
 		do {
@@ -60,6 +60,7 @@ public class Jugador extends Usuario{
 		
 		Combinacion combinacion = new Combinacion(dificultad);
 		do {
+			//controlar repeticion en modo facil y medio
 			System.out.println("Posicion: " + i + " Color :");
 			color = Teclado.leerEntero();
 			//añadimos el color al mapa para poder recorrer el mapa con el contains en el obtenerResultado

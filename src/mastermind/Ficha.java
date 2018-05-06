@@ -1,6 +1,8 @@
 package mastermind;
 
-public class Ficha extends Constantes /*implements Dibujable*/{
+import java.util.Arrays;
+
+public class Ficha extends Constantes implements Dibujable{
 
 
 	
@@ -9,7 +11,7 @@ public class Ficha extends Constantes /*implements Dibujable*/{
 	public static final char CIRCULO = '\u2b24';
 	public static final char CIRCULO_PEQUEÑO = '\u23fa';
 	//en lugar de poner los espacios podemos poner los circulos, pero en lugar del fondo hay que poner el color
-	private static String[] fichasFacilMedio =  {FONDO_NEGRO+"  "+ RESET,
+	private static String[] fichasFacilMedio =  {FONDO_NEGRO+ "  "+ RESET,
 			FONDO_BLANCO+"  "+RESET,
 			FONDO_ROJO+"  "+RESET,
 			FONDO_VERDE+"  "+RESET,
@@ -52,13 +54,23 @@ public class Ficha extends Constantes /*implements Dibujable*/{
 	}
 	
 	//interfaz
-//	public void dibujar() {
-//		System.out.printf("%s", getColor());
-//	}
+	public void dibujar() {
+		System.out.printf("%s", getColor());
+	}
+	
+	public boolean equals(Object obj) {
+		boolean resultado = false;
+		if (obj instanceof Ficha ){
+			resultado = true;
+		}
+			
+		return resultado;
+	}
 	
 	
 //	public static void main(String[] args) {
-//		Ficha f = new Ficha(Dificultad.INDIVIDUAL,0);
+//		Ficha f = new Ficha(Dificultad.INDIVIDUAL,4);
+//		f.dibujar();
 //		
 //		System.out.println(f);
 //		Ficha fichita = new Ficha();

@@ -7,6 +7,7 @@ import java.util.Random;
 public class Maquina extends Usuario{
 	
 	Tablero tableroMaquina;
+	Jugador jugador;
 	Dificultad dificultad;
 	Combinacion combinacionRespuesta;
 	Maquina(Dificultad dificultad){
@@ -47,7 +48,7 @@ public class Maquina extends Usuario{
 	}
 
 	//clase IA, devolvera la lista de combinacion
-	@Override
+	@Override/*IA MEJORADA*/
 	protected void rellenarCombinacion(/*Combinacion combinacionOculta*/) {/*IA, hay que tener en cuenta la dificultad y pasarle la combinacionResultado*/
 		int random;
 		Random rnd = new Random();
@@ -56,8 +57,6 @@ public class Maquina extends Usuario{
 		ArrayList<Combinacion> listaCombinaciones = new ArrayList<Combinacion>();
 		ArrayList<Ficha> listaColoresEncontrados = new ArrayList<Ficha>();
 		ArrayList<Ficha> listaColoresDescartados= new ArrayList<Ficha>();
-		//bucle principal, se crean combinaciones hasta que se acaben los intentos, QUITARLO PARA QUE VAYA DE 1 EN 1
-		for(int i=0;i<dificultad.getIntentos();i++) {
 					
 			/*una vez creada la combinacion la meteremos en el arrayList, igual que hace el usuario para cuando sea maquina vs maquina*/
 			
@@ -157,11 +156,144 @@ public class Maquina extends Usuario{
 			
 			
 			tableroMaquina.añadirCombinacion(combinacion);
-		}
+		
 
 }
 
-	public void obtenerResultado(ArrayList<Integer> listaColoresCombinacion) {
+	public void crearCombinacionPrueba() {
+		
+		int random;
+		Random rnd = new Random();
+		Combinacion combinacion = new Combinacion(dificultad);
+		ArrayList<Ficha> listaAuxiliar = new ArrayList<Ficha>();
+		ArrayList<Ficha> listaColoresEncontrados = new ArrayList<Ficha>();
+		ArrayList<Ficha> listaColoresDescartados= new ArrayList<Ficha>();
+		Ficha aux;
+		
+		/*en el while: mientras este en este bucle probar combinaciones de colores individuales
+		 * despues del while: probar combinaciones con los colores de la lista de encontrados*/
+		while(listaColoresEncontrados.size()<dificultad.getCasilla()) {
+			/*hacer un numero aleatorio que sera el color con el que se rellena la combinacion, añadirlo a la lista auxiliar
+			 * asi despues si ese color esta en la lista no lo volveremos a comprobar*/
+			//miramos si es el primer intento
+			if(tableroMaquina.listaIntentos.size()==0) {
+				/*1º Intento: empieza probando una combinacion de un solo color de los posibles al azar*/
+				random = rnd.nextInt(dificultad.getColores());
+				aux = new Ficha(dificultad, random);
+				listaAuxiliar.add(aux);
+				for(int j=0; j<dificultad.getCasilla(); j++) {
+					combinacion.añadirFicha(random);
+				}
+			/*2º intento aleatorio pero controlando repeticion, la cantidad de combinaciones que se hacen dependera de la partida*/
+			}else {
+				Combinacion res;
+				res = tableroMaquina.listaResultados.get(tableroMaquina.listaResultados.size()-1);/*cogemos la ultima combinacionResultado*/
+				int rojo = 0, negro = 0, blanco = 0;
+				Ficha colorBlanco = new Ficha(dificultad, 1);
+				Ficha colorRojo = new Ficha(dificultad, 2);
+				
+				/*obtenemos el numero de rojos, negros y blancos que hay en el resultado de la combinacion anterior*/
+				for(int k=0; k<res.dificultad.getCasilla();k++) {
+					if(res.combinacion[k]== colorRojo) {
+						rojo ++ ;
+					}else if(res.combinacion[k]== colorBlanco) {
+						blanco ++;
+					}else {
+						negro ++ ; 
+					}
+				}
+				
+				//si es todo rojo querra decir que no esta
+				if(rojo == dificultad.getCasilla()) {
+					//si esto se da se coge el ultimo color de la lista auxiliar y se añade a la lista de descartes
+					aux = listaAuxiliar.get(listaAuxiliar.size()-1);
+					listaColoresDescartados.add(aux);
+				//si hay dos blancos o mas, añadiremos ese color tantas vecs como blancos halla
+				}else if(blanco>=2) {
+					aux = listaAuxiliar.get(listaAuxiliar.size()-1);
+					for(int i=0;i<blanco;i++) {
+						listaColoresEncontrados.add(aux);
+					}
+				//si hay dos negros o mas, añadiremos ese color tantas veces como negros halla
+				}else if(negro>=2) {
+					aux = listaAuxiliar.get(listaAuxiliar.size()-1);
+					for(int i=0;i<negro;i++) {
+						listaColoresEncontrados.add(aux);
+					}
+				}
+				
+				
+				/*prueba otro color de los posibles al azar, si ya se ha probado coge otro color*/
+				boolean contiene = false;
+				do {
+					random = rnd.nextInt(dificultad.getColores());
+					aux = new Ficha(dificultad, random);
+					
+					if(listaAuxiliar.contains(aux)) {
+						contiene = true;
+					}else {
+						listaAuxiliar.add(aux);
+						for(int j=0; j<dificultad.getCasilla(); j++) {
+							combinacion.añadirFicha(random);
+						}
+					}
+				}while(!contiene);
+				
+				
+		}
+		
+			//probar un color y meterlo en una lista para que no lo pruebe dos veces
+			//cuando el tamaño de la lista es igual al de las casillas, pasamos a crear combinaciones con esos colores
+			
+			
+			
+//			/*comparamos la nueva combinacion con todas las de la lista*/
+//			for(int k=0;k<tableroMaquina.listaIntentos.size();k++) {			
+//				if(combinacion.equals(tableroMaquina.listaIntentos.get(k)) == true) {
+//					for(int j=0; j<dificultad.getCasilla(); j++) {
+//						random = rnd.nextInt(dificultad.getColores());
+//						combinacion.añadirFicha(random);
+//					}
+//					k=0;
+//				}else {
+//					//si no son iguales sigue el proceso y se añade al tablero y por tanto a la lista de intentos
+//				}
+//			}
+			tableroMaquina.añadirCombinacion(combinacion);
+	}//acaba el while principal
+		
+		/*una vez el tamaño de la lista es igual al tamaño de las casillas posibles
+		 * con esto sabemos que todos los colores de la combinacion estan en la lista, por lo tanto,
+		 * empezaremos a generar combinaciones al azar a partir de esos colores
+		 * y controlaremos que las combinaciones no se repitan*/
+		
+		//sacamos colores ordenadamente de la lista
+		for(int i=0;i<dificultad.getCasilla();i++) {
+			//sacar un aleatorio entre 0 y el numero de casillas, es decir, nos dara una posicion al azar
+			random = rnd.nextInt(dificultad.getCasilla());
+			//colocar el color que corresponda a i en la posicion que nos de el aleatorio
+			combinacion.combinacion[random] = listaColoresEncontrados.get(i);
+		}
+		
+		
+		
+		
+		//sacar en orden los colores y hacer aleatoria la posicion de estos, en lugar de alreves
+		
+		
+		
+		
+		
+		
+		
+		tableroMaquina.añadirCombinacion(combinacion);
+		
+
+	}
+	
+	
+	
+	public void obtenerResultado() {
 		
 		int negro=0;
 		int blanco=0;
@@ -175,10 +307,10 @@ public class Maquina extends Usuario{
 			for(int j=0;j<dificultad.getCasilla();j++) {
 				
 				//recorre el mapa y devuelve el contenido de la lista en la posicion i
-				if(mapaComparacion.get(j) == listaColoresCombinacion.get(i) && i==j) {
+				if(mapaComparacion.get(j) == jugador.listaColoresCombinacion.get(i) && i==j) {
 					negro++;
 					
-				}else if(mapaComparacion.get(j) == listaColoresCombinacion.get(i) && i==j) {
+				}else if(mapaComparacion.get(j) ==  jugador.listaColoresCombinacion.get(i) && i==j) {
 					blanco++;
 					
 				}else {
@@ -204,25 +336,7 @@ public class Maquina extends Usuario{
 		/*cuando se comparen y se sepa la combinacionResultado se pasara al arrayList listaResultado*/
 	}
 
-//	public Combinacion IA() {
-//	int random;
-//Random rnd = new Random();
-//Combinacion combinacion = new Combinacion(dificultad);
-//
-//
-////bucle principal, se crean combinaciones hasta que se acaben los intentos
-//for(int i=0;i<dificultad.getIntentos();i++) {
-//
-//
-///*una vez creada la combinacion la meteremos en el arrayList, igual que hace el usuario para cuando sea maquina vs maquina*/
-///*1º Intento: aleatorio*/
-//for(int j=0; j<dificultad.getCasilla(); j++) {
-//random = rnd.nextInt(dificultad.getColores());
-//combinacion.añadirFicha(random);
-//}
-//tableroMaquina.añadirCombinacion(combinacion);
-//}
-//	}
+
 
 
 	
