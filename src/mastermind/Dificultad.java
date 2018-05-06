@@ -2,7 +2,7 @@ package mastermind;
 
 public enum Dificultad {
 
-	INDIVIDUAL(4,8, false, 10), EXPERTO(5,8,false,15), AUTOMATICO(8,10,true,100);
+	INDIVIDUAL(4,8, false, 10), EXPERTO(5,8,false,15), AUTOMATICO(8,10,true,1000);
 	
 	private int casilla;
 	private int colores;

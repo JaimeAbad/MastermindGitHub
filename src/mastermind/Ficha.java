@@ -68,28 +68,4 @@ public class Ficha extends Constantes implements Dibujable{
 	}
 	
 	
-//	public static void main(String[] args) {
-//		Ficha f = new Ficha(Dificultad.INDIVIDUAL,4);
-//		f.dibujar();
-//		
-//		System.out.println(f);
-//		Ficha fichita = new Ficha();
-//		int color, color2, color1;
-//		System.out.println(fichita.toString());
-//		System.out.println("Introduce un color");
-//		color = Teclado.leerEntero();
-//		System.out.println("Introduce un color");
-//		color1 = Teclado.leerEntero();
-//		System.out.println("Introduce un color");
-//		color2 = Teclado.leerEntero();
-//		System.out.println(fichita.dameFicha(color) + fichita.dameFicha(color1) + fichita.dameFicha(color2));
-//		
-//		Ficha ficha = new Ficha();
-//		System.out.println(ficha.dameFicha(5));
-//		Dificultad d = Dificultad.INDIVIDUAL;
-//		Ficha fic = new Ficha(d,0);
-//		
-//		System.out.println(fic.getColor());
-//	} 
-	
 }

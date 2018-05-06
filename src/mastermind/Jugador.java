@@ -33,7 +33,7 @@ public class Jugador extends Usuario{
 	}
 	
 	//IMPORTANTE
-	/*la diferencia entre rellenarCombinacion y crearCombinacionSecreta es que el rellenar lo que hae es crear una combinacion 
+	/*la diferencia entre rellenarCombinacion y crearCombinacionSecreta es que el rellenar lo que haCe es crear una combinacion 
 	 * y pasarla al metodo añadir combinacion del tablero, que la introducira en el arrayList;
 	 * Mientras que en el crear, solo la creara y la devolvera ya que nos hara falta para pasarsela al tablero */
 	protected void rellenarCombinacion() {
@@ -96,46 +96,6 @@ public class Jugador extends Usuario{
 		}while(i<dificultad.getCasilla());
 		tablero.añadirRespuesta(combinacion);
 	}
-	
-//	public static void main(String[] args) {
-////
-////		
-////		// aqui vamos a sacar quien juega del menu y en el tablero segun quien sea el jugador se obtendra un tablero u otro
-////		//o dos si es el modo dificil
-//		
-//		Jugador j = new Jugador(Dificultad.INDIVIDUAL);
-//		//Tablero tablero = new Tablero();
-//		j.rellenarCombinacion();
-//		//System.out.println(tablero.listaIntentos);
-
-	
-	
-	
-	/*El main sera mas o menos asi
-	 * Dificultad dificultad;
-	 * Combinacion combinacion;
-	 * Jugador j = new Jugador(dificultad);
-	 * Maquina m = new Maquina(dificultad);
-	 * 
-	 * combinacion = m.crearCombinacionSecreta();
-	 * Tablero t = new Tablero(combinacion);
-	 * 
-	 * Con esto ya tendriamos el tablero y la combinacion secreta
-	 * 
-	 * j.rellenarCombinacion();
-	 * primer intento
-	 * 
-	 * ahora faltaria comparar las combinaciones
-	 * 
-	 * Seguramente haya que hacer un do while al j.rellenarCombinacion() para que la pida mientras no sean iguales
-
-	 * */
-//	}
-
-	
-
-
-	
 	
 
 }

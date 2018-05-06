@@ -43,12 +43,44 @@ public class Menu {
 
 		Menu menudazo = new Menu();
 		System.out.println(menudazo);
-		//try {
-			//menudazo.dameMenu();
-		//}catch(NumeroIncorrectoException E) {
-		//	System.out.println("Introduce un numero correcto");
-		//}
+
 		
+	}
+
+
+
+	public int getModo() {
+		return modo;
+	}
+
+
+
+	public void setModo(int modo) {
+		this.modo = modo;
+	}
+
+
+
+	public int getOpcion() {
+		return opcion;
+	}
+
+
+
+	public void setOpcion(int opcion) {
+		this.opcion = opcion;
+	}
+
+
+
+	public String getInstrucciones() {
+		return instrucciones;
+	}
+
+
+
+	public void setInstrucciones(String instrucciones) {
+		this.instrucciones = instrucciones;
 	}
 
 }

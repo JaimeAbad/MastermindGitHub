@@ -36,20 +36,45 @@ public class Maquina extends Usuario{
 	@Override
 	protected Combinacion crearCombinacionSecreta() {
 		int random;
+		boolean repetido = false;
+		ArrayList<Integer> listaColorUtilizado= new ArrayList<Integer>();
 		Random rnd = new Random();
 		Combinacion combinacion = new Combinacion(dificultad);
 		
-		for(int i=0; i<combinacion.dificultad.getCasilla(); i++) {
-			random = rnd.nextInt(dificultad.getColores());
-			mapaComparacion.put(i, random);
-			combinacion.añadirFicha(random);
+		if(dificultad == Dificultad.INDIVIDUAL || dificultad == Dificultad.EXPERTO) {
+			do {
+				for(int i=0; i<combinacion.dificultad.getCasilla(); i++) {
+					
+					random = rnd.nextInt(dificultad.getColores());
+					if(listaColorUtilizado.contains(random)) {
+						repetido = true;
+					}else {
+						listaColorUtilizado.add(random);
+						mapaComparacion.put(i, random);
+						combinacion.añadirFicha(random);
+					}
+					
+				}
+			}while(repetido==true);
+			
+		}else {
+			for(int i=0; i<combinacion.dificultad.getCasilla(); i++) {
+				random = rnd.nextInt(dificultad.getColores());
+				mapaComparacion.put(i, random);
+				combinacion.añadirFicha(random);
+			}
 		}
+		
+		
+		
+		
+		
 		return combinacion;
 	}
 
-	//clase IA, devolvera la lista de combinacion
-	@Override/*IA MEJORADA*/
-	protected void rellenarCombinacion(/*Combinacion combinacionOculta*/) {/*IA, hay que tener en cuenta la dificultad y pasarle la combinacionResultado*/
+	
+	@Override/*IA PROCESO DE MEJORA*/
+	protected void rellenarCombinacion() {/*IA, hay que tener en cuenta la dificultad y pasarle la combinacionResultado*/
 		int random;
 		Random rnd = new Random();
 		Combinacion combinacion = new Combinacion(dificultad);
@@ -176,7 +201,8 @@ public class Maquina extends Usuario{
 			/*hacer un numero aleatorio que sera el color con el que se rellena la combinacion, añadirlo a la lista auxiliar
 			 * asi despues si ese color esta en la lista no lo volveremos a comprobar*/
 			//miramos si es el primer intento
-			if(tableroMaquina.listaIntentos.size()==0) {
+			/*tableroMaquina.listaIntentos.size()==0 || tableroMaquina.listaIntentos == null*/
+			if(listaAuxiliar.size()==0 || listaAuxiliar == null) {
 				/*1º Intento: empieza probando una combinacion de un solo color de los posibles al azar*/
 				random = rnd.nextInt(dificultad.getColores());
 				aux = new Ficha(dificultad, random);
@@ -184,6 +210,7 @@ public class Maquina extends Usuario{
 				for(int j=0; j<dificultad.getCasilla(); j++) {
 					combinacion.añadirFicha(random);
 				}
+				tableroMaquina.añadirCombinacion(combinacion);
 			/*2º intento aleatorio pero controlando repeticion, la cantidad de combinaciones que se hacen dependera de la partida*/
 			}else {
 				Combinacion res;
@@ -239,53 +266,46 @@ public class Maquina extends Usuario{
 					}
 				}while(!contiene);
 				
-				
+				tableroMaquina.añadirCombinacion(combinacion);	
 		}
 		
-			//probar un color y meterlo en una lista para que no lo pruebe dos veces
-			//cuando el tamaño de la lista es igual al de las casillas, pasamos a crear combinaciones con esos colores
-			
-			
-			
-//			/*comparamos la nueva combinacion con todas las de la lista*/
-//			for(int k=0;k<tableroMaquina.listaIntentos.size();k++) {			
-//				if(combinacion.equals(tableroMaquina.listaIntentos.get(k)) == true) {
-//					for(int j=0; j<dificultad.getCasilla(); j++) {
-//						random = rnd.nextInt(dificultad.getColores());
-//						combinacion.añadirFicha(random);
-//					}
-//					k=0;
-//				}else {
-//					//si no son iguales sigue el proceso y se añade al tablero y por tanto a la lista de intentos
-//				}
-//			}
-			tableroMaquina.añadirCombinacion(combinacion);
+		
 	}//acaba el while principal
 		
 		/*una vez el tamaño de la lista es igual al tamaño de las casillas posibles
 		 * con esto sabemos que todos los colores de la combinacion estan en la lista, por lo tanto,
 		 * empezaremos a generar combinaciones al azar a partir de esos colores
 		 * y controlaremos que las combinaciones no se repitan*/
+		boolean repe = false;
+		boolean posVacia = false;
+		ArrayList<Integer> listaPosicionesOcupadas = new ArrayList<Integer>();
+		do {
+			//sacamos colores ordenadamente de la lista
+			for(int i=0;i<dificultad.getCasilla();i++) {
+				//comprobar que no se repita la posicion, es decir, que la posicion no esta ocupada
+				do {
+					//sacar un aleatorio entre 0 y el numero de casillas, es decir, nos dara una posicion al azar
+					random = rnd.nextInt(dificultad.getCasilla());
+					if(listaPosicionesOcupadas.contains(random)) {
+						posVacia = true;
+					}else {
+						listaPosicionesOcupadas.add(random);
+					}
+				}while(posVacia==true);
+				
+				//colocar el color que corresponda a i en la posicion que nos de el aleatorio
+				combinacion.combinacion[random] = listaColoresEncontrados.get(i);
+			}
+			//comprobamos que la combinacion no este ya en la lista, en ese caso crea otra
+			if(tableroMaquina.listaIntentos.contains(combinacion)) {
+				repe = true;
+			}else {
+				tableroMaquina.añadirCombinacion(combinacion);
+			}
+		}while(repe == true);
 		
-		//sacamos colores ordenadamente de la lista
-		for(int i=0;i<dificultad.getCasilla();i++) {
-			//sacar un aleatorio entre 0 y el numero de casillas, es decir, nos dara una posicion al azar
-			random = rnd.nextInt(dificultad.getCasilla());
-			//colocar el color que corresponda a i en la posicion que nos de el aleatorio
-			combinacion.combinacion[random] = listaColoresEncontrados.get(i);
-		}
-		
-		
-		
-		
-		//sacar en orden los colores y hacer aleatoria la posicion de estos, en lugar de alreves
-		
-		
-		
-		
-		
-		
-		
+
+		//quitar
 		tableroMaquina.añadirCombinacion(combinacion);
 		
 
@@ -337,25 +357,4 @@ public class Maquina extends Usuario{
 	}
 
 
-
-
-	
-	
-	//BUEN EJEMPLO
-//	public String prueba(int n) {
-//		
-//		Ficha f = new Ficha(Dificultad.INDIVIDUAL,n);
-//
-//		
-//		return String.format("%s",f.getColor());//poner el getColor para que no salga el hashcode
-//	}
-//
-//
-//	public static void main(String[] args) {
-//		Maquina m = new Maquina(Dificultad.INDIVIDUAL);
-//		for(int i=0;i<5;i++) {
-//			System.out.println(m.prueba(i));
-//		}
-//		
-//	}
 }
