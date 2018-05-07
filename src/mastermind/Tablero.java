@@ -28,6 +28,9 @@ public class Tablero implements Dibujable{
 	 * Almacena la combinacion secreta
 	 * @param combinacionSecreta La combinacion secreta que crea el usuari que no juega o el rival
 	 */
+	Tablero(){
+		
+	}
 	Tablero(Combinacion combinacionSecreta){
 		this.combinacionSecreta = combinacionSecreta;
 	}
@@ -48,7 +51,7 @@ public class Tablero implements Dibujable{
 	 * @return 	La combinacion
 	 * @see 	Combinacion
 	 */
-	public Combinacion añadirRespuesta(Combinacion comb) {
+	public Combinacion añadirRespuesta(Combinacion combinacion) {
 		listaResultados.add(combinacion);
 		return combinacion;
 	}
@@ -65,8 +68,14 @@ public class Tablero implements Dibujable{
 
 	@Override
 	public void dibujar() {
-		System.out.printf("%s | %s\n", listaIntentos, listaResultados);
+		for(int i=0;i<listaIntentos.size();i++) {
+			System.out.printf("%s | %s\n", listaIntentos.get(i), listaResultados.get(i));
+		}
+		
 	}
+	
+
+
 
 	
 }

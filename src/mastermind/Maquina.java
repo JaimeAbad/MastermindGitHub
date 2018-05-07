@@ -76,7 +76,7 @@ public class Maquina extends Usuario{
 					}else {
 						listaColorUtilizado.add(random);
 						mapaComparacion.put(i, random);
-						combinacion.añadirFicha(random);
+						combinacion.añadirFicha(random,i);
 					}
 					
 				}
@@ -86,7 +86,7 @@ public class Maquina extends Usuario{
 			for(int i=0; i<combinacion.dificultad.getCasilla(); i++) {
 				random = rnd.nextInt(dificultad.getColores());
 				mapaComparacion.put(i, random);
-				combinacion.añadirFicha(random);
+				combinacion.añadirFicha(random,i);
 			}
 		}
 		
@@ -99,7 +99,7 @@ public class Maquina extends Usuario{
 
 	
 	@Override/*IA PROCESO DE MEJORA*/
-	protected void rellenarCombinacion() {/*IA, hay que tener en cuenta la dificultad y pasarle la combinacionResultado*/
+	protected Combinacion rellenarCombinacion() {/*IA, hay que tener en cuenta la dificultad y pasarle la combinacionResultado*/
 		int random;
 		Random rnd = new Random();
 		Combinacion combinacion = new Combinacion(dificultad);
@@ -113,7 +113,7 @@ public class Maquina extends Usuario{
 			if(listaCombinaciones.size()==0) {//si se da esta condicion quiere decir que es el primer intento, ya que no hya nada en la lista aun
 				for(int j=0; j<dificultad.getCasilla(); j++) {/*1º Intento: aleatorio*/
 					random = rnd.nextInt(dificultad.getColores());
-					combinacion.añadirFicha(random);
+					combinacion.añadirFicha(random,j);
 				}
 			}else {
 				/*aqui sera el intento 2 o mas, por lo tanto, se coge la combinacion anterior y se cambian tanto colores como rojos halla
@@ -207,6 +207,7 @@ public class Maquina extends Usuario{
 			
 			tableroMaquina.añadirCombinacion(combinacion);
 		
+			return combinacion;
 
 }
 	/**
@@ -215,7 +216,7 @@ public class Maquina extends Usuario{
 	 * controlando que no se repitan las combinaciones
 	 * una vez creada la combinacion completamente se la pasamos al tablero
 	 */
-	public void crearCombinacionPrueba() {
+	public Combinacion crearCombinacionPrueba() {
 		
 		int random;
 		Random rnd = new Random();
@@ -238,7 +239,7 @@ public class Maquina extends Usuario{
 				aux = new Ficha(dificultad, random);
 				listaAuxiliar.add(aux);
 				for(int j=0; j<dificultad.getCasilla(); j++) {
-					combinacion.añadirFicha(random);
+					combinacion.añadirFicha(random,j);
 				}
 				tableroMaquina.añadirCombinacion(combinacion);
 			/*2º intento aleatorio pero controlando repeticion, la cantidad de combinaciones que se hacen dependera de la partida*/
@@ -291,7 +292,7 @@ public class Maquina extends Usuario{
 					}else {
 						listaAuxiliar.add(aux);
 						for(int j=0; j<dificultad.getCasilla(); j++) {
-							combinacion.añadirFicha(random);
+							combinacion.añadirFicha(random,j);
 						}
 					}
 				}while(!contiene);
@@ -338,6 +339,7 @@ public class Maquina extends Usuario{
 		//quitar
 		tableroMaquina.añadirCombinacion(combinacion);
 		
+		return combinacion;
 
 	}
 	
@@ -347,47 +349,48 @@ public class Maquina extends Usuario{
 	 * pedimos que cree una combinacion del tamaño de la otra con  los colores correspondientes  al resultado,
 	 * una vez creada se pasa al tablero del jugador
 	 */
-	public void obtenerResultado() {
+	public Combinacion obtenerResultado() {
 		
 		int negro=0;
 		int blanco=0;
 		int rojo=0;
+		jugador = new Jugador(dificultad);
 		Combinacion combinacionResultado = new Combinacion(dificultad);
 		/*nombreMap.get(K clave); // Devuelve el valor de la clave que se le pasa como parámetro 
 		 *la clave va a ser la posicion en la lista del que estemos buscando y 
 		 * si lo que devuelve es igual a lo que hay en la lista en esa posicion coincide color y posicino*/
-		for(int i=0;i<dificultad.getCasilla();i++) {
 			/*nombreMap.get(K clave); // Devuelve el valor de la clave que se le pasa como parámetro*/
 			for(int j=0;j<dificultad.getCasilla();j++) {
 				
-				//recorre el mapa y devuelve el contenido de la lista en la posicion i
-				if(mapaComparacion.get(j) == jugador.listaColoresCombinacion.get(i) && i==j) {
+				//si el mapa contiene el dato de la lista en j y i = j quiere decir que es el mismo color en la misma posicion, osea negro
+				if(mapaComparacion.containsValue(jugador.listaColoresCombinacion.get(j)) && mapaComparacion.containsKey(j)) {
 					negro++;
+					if(dificultad == Dificultad.INDIVIDUAL || dificultad == Dificultad.EXPERTO) {
+						jugador.listaColoresCombinacion.remove(j);
+					}
 					
-				}else if(mapaComparacion.get(j) ==  jugador.listaColoresCombinacion.get(i) && i==j) {
+				}else if(mapaComparacion.containsValue(jugador.listaColoresCombinacion.get(j)) && !mapaComparacion.containsKey(j)) {
 					blanco++;
 					
-				}else {
-				
 				}
 				
 			}
 			
-		}
 		
 		rojo = combinacionResultado.dificultad.getCasilla() - negro - blanco;
 		for(int i=0;i< negro;i++) {
-			combinacionResultado.añadirFicha(0);//el 0 es el color negro
+			combinacionResultado.añadirFicha(0,i);//el 0 es el color negro
 		}
 		for(int i=0;i< blanco;i++) {
-			combinacionResultado.añadirFicha(1);//el 1 es el color blanco
+			combinacionResultado.añadirFicha(1,i);//el 1 es el color blanco
 		}
 		for(int i=0;i< rojo;i++) {
-			combinacionResultado.añadirFicha(2);//el 3 es el color rojo
+			combinacionResultado.añadirFicha(2,i);//el 3 es el color rojo
 		}
 		//cuando se cree la combinacion del resultado se añade al tablero que lo mete en la lista de resultados
 		tableroMaquina.añadirRespuesta(combinacionResultado);
 		/*cuando se comparen y se sepa la combinacionResultado se pasara al arrayList listaResultado*/
+		return combinacionResultado;
 	}
 
 

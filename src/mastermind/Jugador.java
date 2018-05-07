@@ -13,11 +13,10 @@ import java.util.ArrayList;
 //@since: en qué versión se incluyó la clase, método, etc
 public class Jugador extends Usuario{
 	/**
-	 * Almacena un entero que utilizaremos para modificarlo, el color, un objeto tablero, la dificultad y una lista
+	 * Almacena el color, un objeto tablero, la dificultad y una lista
 	 * que será de los colores de los cuales está compuesta la combinación
 	 */
 	
-	private int i=0;
 	private int color;
 	Tablero tablero;
 	Dificultad dificultad;
@@ -40,8 +39,6 @@ public class Jugador extends Usuario{
 			dificultad.getIntentos();
 			dificultad.getColores();
 			dificultad.isRepeticion();
-		}else {
-			
 		}
 	}
 	
@@ -52,23 +49,26 @@ public class Jugador extends Usuario{
 	/*la diferencia entre rellenarCombinacion y crearCombinacionSecreta es que el rellenar lo que haCe es crear una combinacion 
 	 * y pasarla al metodo añadir combinacion del tablero, que la introducira en el arrayList;
 	 * Mientras que en el crear, solo la creara y la devolvera ya que nos hara falta para pasarsela al tablero */
-	protected void rellenarCombinacion() {
+	protected Combinacion rellenarCombinacion() {
 		
 		Combinacion combinacion = new Combinacion(dificultad);
-		
+		System.out.println("Rellena la combinacion intento.");
 		System.out.println("0. Negro \n1. Blanco \n2. Rojo \n3. Verde \n4. Amarillo \n5. Azul \n6. Morado \n7. Celeste\n");
-		do {
+		
+		for(int i = 0;i<dificultad.getCasilla();i++) {
 			System.out.println("Introduce un color para la posicion" + i + ":");
 			color = Teclado.leerEntero();
 			//vamos a rellenar la lista, la cual sera como una combinacion pero posicion a posicion
 			//no como el objeto combinacion en conjunto
 			//es decir hay una lista para el conjunto de la combinacion y otra que guarda cada color por separado
 			listaColoresCombinacion.add(i, color);
-			combinacion.añadirFicha(color);
-			i++;
-		}while(i<dificultad.getCasilla());
-		
+			combinacion.añadirFicha(color,i);
+		}
+
+		tablero = new Tablero();
 		tablero.añadirCombinacion(combinacion);
+		
+		return combinacion;
 		
 	}
 	
@@ -83,16 +83,18 @@ public class Jugador extends Usuario{
 	protected Combinacion crearCombinacionSecreta() {
 		
 		Combinacion combinacion = new Combinacion(dificultad);
-		do {
+		System.out.println("Rellena la combinacion secreta para la maquina.");
+		System.out.println("0. Negro \n1. Blanco \n2. Rojo \n3. Verde \n4. Amarillo \n5. Azul \n6. Morado \n7. Celeste\n");
+		
+		for(int i = 0;i<dificultad.getCasilla();i++) {
 			//controlar repeticion en modo facil y medio
 			System.out.println("Posicion: " + i + " Color :");
 			color = Teclado.leerEntero();
 			//añadimos el color al mapa para poder recorrer el mapa con el contains en el obtenerResultado
 			mapaComparacion.put(i, color);
 			//añadimos el color a la combinacion
-			combinacion.añadirFicha(color);
-			i++;
-		}while(i<dificultad.getCasilla());
+			combinacion.añadirFicha(color,i);
+		}
 		
 		return combinacion;
 	}
@@ -104,7 +106,8 @@ public class Jugador extends Usuario{
 	 * @param combinacion La combinacion que es intento
 	 */
 	//la combinacion que recibe es el intento de la maquina
-	protected void obtenerResultado(Combinacion combinacion/*LinkedHashMap<Integer, Integer> mapaComparacion*/) {
+	protected Combinacion obtenerResultado(Combinacion combinacion) {
+		Combinacion combinacionResultado = new Combinacion(dificultad);
 		/*negro: color y posicion correctos
 		 * blanco: color correcto
 		 * rojo: ni color ni posicion*/
@@ -113,20 +116,48 @@ public class Jugador extends Usuario{
 				+ "	1 - Blanco: Solo color correcto\n"
 				+ "	2 - Rojo: Ni color ni posicion correctos");
 		
-		do {
+		for(int i = 0;i<dificultad.getCasilla();i++) {
 			System.out.println("Posicion: " + i + " Color :");
 			color = Teclado.leerEntero();
+			
 			if(color>=3) {
 				System.out.println("Posicion: " + i + " Color :");
 				color = Teclado.leerEntero();
 			}else{
-				combinacion.añadirFicha(color);
+				combinacionResultado.añadirFicha(color,i);
 				i++;
 			}
-			
-		}while(i<dificultad.getCasilla());
-		tablero.añadirRespuesta(combinacion);
+		}
+		tablero.añadirRespuesta(combinacionResultado);
+		return combinacionResultado;
 	}
 	
+	
+	public static void main(String[] args) {
+	
+	Dificultad dificultad  = Dificultad.INDIVIDUAL;
+	Jugador j = new Jugador(dificultad);
+	Maquina m = new Maquina(dificultad);
+	Combinacion cJugador = new Combinacion(dificultad);
+	Combinacion cSecreta = new Combinacion(dificultad);
+	//la maquina crea la combinacion secreta
+	cSecreta = m.crearCombinacionSecreta();
+	Tablero t = new Tablero(cSecreta);
+	
+	//intento del jugador
+	cJugador = j.rellenarCombinacion();
+	//añadir combinacion al tablero
+	//la maquina comprueba el resultado
+	m.obtenerResultado();
+	//añadir combinacion resultado al tablero
+	//el tablero pinta
+	t.dibujar();
+	/*Partida del jugador:
+	 * 1	la maquina crea la combinacion secreta
+	 * 2 	el jugador prueba el intento
+	 * 3	la maquina devuelve el resultado de ese intento
+	 * 4. el tablero tiene esos intentos y resultados y los pinta*/
+	
+}
 
 }

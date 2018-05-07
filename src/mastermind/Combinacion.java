@@ -36,11 +36,11 @@ public class Combinacion implements Dibujable{
 	//este metodo añade la ficha que se e introduzca a la posicion que toque
 	
 	/**
-	 * Crea la ficha del color que se le pase y la añade a la combinacion
+	 * Crea la ficha del color que se le pase y la añade a la combinacion donde se le indique
 	 * @param color El color que se elija
 	 * @return combinacion El array de combinacion relleno de colores(Fichas)
 	 */
-	public Ficha[] añadirFicha(int color/*, int posicion*/) {
+	public Ficha[] añadirFicha(int color, int posicion) {
 		boolean ocupada = false;
 		f = new Ficha(dificultad, color);
 		/*trampa para que no me devuelva el hashcode*/
@@ -50,10 +50,8 @@ public class Combinacion implements Dibujable{
 		YA QUE CON EL FOR SMP LA RECORRE IGUAL O EN LUGAR DE PASARLE A COMBINACION[i] PASARLE EL ATRIBUTO POSICION*/
 		for(int i=0;i<dificultad.getCasilla();i++) {//recorre la combinacion y donde no halla color lo añade
 			if(ocupada==false) {
-				combinacion[i] = f;
+				combinacion[posicion] = f;
 				ocupada=true;
-			}else {
-				
 			}
 			
 		}
@@ -86,6 +84,18 @@ public class Combinacion implements Dibujable{
 		}
 	}
 	
+//	public static void main(String[] args) {
+//		Dificultad dificultad  = Dificultad.INDIVIDUAL;
+//		Combinacion c = new Combinacion(dificultad);
+//		
+//		c.añadirFicha(1,0);
+//		c.añadirFicha(2,1);
+//		c.añadirFicha(3,2);
+//		c.añadirFicha(4,3);
+//		
+//		c.dibujar();
+//		
+//	}
 
 
 }

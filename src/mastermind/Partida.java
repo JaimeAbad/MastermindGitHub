@@ -85,7 +85,7 @@ public class Partida {
 			Combinacion combinacionGanadora = new Combinacion(dificultad);
 			
 			for(int i=0;i<dificultad.getCasilla();i++) {
-				combinacionGanadora.añadirFicha(0);
+				combinacionGanadora.añadirFicha(0,i);
 			}
 			
 			jugador = new Jugador(dificultad);
@@ -99,6 +99,8 @@ public class Partida {
 				jugador.rellenarCombinacion();
 				maquina1.obtenerResultado();
 				tablero.dibujar();
+				
+				
 			}while(intento<=dificultad.getIntentos()  || combinacionGanadora.equals(ultimaCombinacion)==true);
 			
 			if(intento == dificultad.getIntentos()) {
@@ -114,7 +116,7 @@ public class Partida {
 			Combinacion combinacionGanadora = new Combinacion(dificultad);
 			
 			for(int i=0;i<dificultad.getCasilla();i++) {
-				combinacionGanadora.añadirFicha(0);
+				combinacionGanadora.añadirFicha(0,i);
 			}
 			
 			jugador = new Jugador(dificultad);
@@ -142,7 +144,7 @@ public class Partida {
 			Combinacion combinacionGanadora = new Combinacion(dificultad);
 			
 			for(int i=0;i<dificultad.getCasilla();i++) {
-				combinacionGanadora.añadirFicha(0);
+				combinacionGanadora.añadirFicha(0,i);
 			}
 			
 			jugador = new Jugador(dificultad);
@@ -163,6 +165,7 @@ public class Partida {
 				jugador.obtenerResultado(ultimaCombinacionJugador);
 				tableroJugador.dibujar();
 				tableroMaquina.dibujar();
+				
 			}while(intento<=dificultad.getIntentos()  || combinacionGanadora.equals(ultimaCombinacionJugador)==true || combinacionGanadora.equals(ultimaCombinacionMaquina)==true );
 			
 			if(intento == dificultad.getIntentos()) {
@@ -180,7 +183,7 @@ public class Partida {
 			Combinacion combinacionGanadora = new Combinacion(dificultad);
 			
 			for(int i=0;i<dificultad.getCasilla();i++) {
-				combinacionGanadora.añadirFicha(0);
+				combinacionGanadora.añadirFicha(0,i);
 			}
 			
 			jugador = new Jugador(dificultad);
@@ -199,8 +202,10 @@ public class Partida {
 				jugador.obtenerResultado(ultimaCombinacionJugador);
 				jugador.rellenarCombinacion();
 				maquina1.obtenerResultado();
-				tableroJugador.dibujar();
 				tableroMaquina.dibujar();
+				tableroJugador.dibujar();
+				
+				
 			}while(intento<=dificultad.getIntentos()  || combinacionGanadora.equals(ultimaCombinacionJugador)==true || combinacionGanadora.equals(ultimaCombinacionMaquina)==true );
 			
 			if(intento == dificultad.getIntentos()) {
@@ -217,7 +222,7 @@ public class Partida {
 			Combinacion combinacionGanadora = new Combinacion(dificultad);
 			
 			for(int i=0;i<dificultad.getCasilla();i++) {
-				combinacionGanadora.añadirFicha(0);
+				combinacionGanadora.añadirFicha(0,i);
 			}
 			
 			maquina2 = new Maquina(dificultad);
@@ -236,8 +241,9 @@ public class Partida {
 				maquina2.obtenerResultado();
 				maquina2.rellenarCombinacion();
 				maquina1.obtenerResultado();
-				tablero.dibujar();
 				tableroMaquina.dibujar();
+				tablero.dibujar();
+				
 			}while(intento<=dificultad.getIntentos()  || combinacionGanadora.equals(ultimaCombinacionMaquina2)==true || combinacionGanadora.equals(ultimaCombinacionMaquina)==true );
 			
 			if(intento == dificultad.getIntentos()) {
@@ -249,13 +255,13 @@ public class Partida {
 				System.out.println("LA IA PRINCIPAL VENCE A LA SECUNDARIA");
 			}
 
-//		modo dificil empieza maquina
+//		modo dificil empieza maquina2
 		}else if(menu.getModo() == 4) {
 			dificultad = Dificultad.AUTOMATICO;
 			Combinacion combinacionGanadora = new Combinacion(dificultad);
 			
 			for(int i=0;i<dificultad.getCasilla();i++) {
-				combinacionGanadora.añadirFicha(0);
+				combinacionGanadora.añadirFicha(0,i);
 			}
 			
 			maquina2 = new Maquina(dificultad);
@@ -276,6 +282,7 @@ public class Partida {
 				maquina2.obtenerResultado();
 				tablero.dibujar();
 				tableroMaquina.dibujar();
+				
 			}while(intento<=dificultad.getIntentos()  || combinacionGanadora.equals(ultimaCombinacionMaquina2)==true || combinacionGanadora.equals(ultimaCombinacionMaquina)==true );
 			
 			if(intento == dificultad.getIntentos()) {
