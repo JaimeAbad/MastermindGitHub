@@ -1,6 +1,6 @@
 package mastermind;
 /**
- * Que almacena la clase
+ * Interfaz para dibujar
  * 
  * @author Jaime Abad
  * @version 1.0

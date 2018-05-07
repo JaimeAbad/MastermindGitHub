@@ -1,7 +1,7 @@
 package mastermind;
 
 /**
- * Que almacena la clase
+ * Almacena los colores de cada modo
  * 
  * @author Jaime Abad
  * @version 1.0
@@ -13,13 +13,16 @@ package mastermind;
 
 public class Ficha extends Constantes implements Dibujable{
 
-
+	/**
+	 * Almacena el color, el modo, un array de colores para cada modo y 2 caracteres de circulo
+	 * 	 */
+	//Solamente se muestran en el Javadoc los atributos públicos
 	
 	private String color;
 	Dificultad dificultad;
 	public static final char CIRCULO = '\u2b24';
 	public static final char CIRCULO_PEQUEÑO = '\u23fa';
-	//en lugar de poner los espacios podemos poner los circulos, pero en lugar del fondo hay que poner el color
+	//en lugar de poner los espacios poner los circulos, pero en lugar del fondo hay que poner el color
 	private static String[] fichasFacilMedio =  {NEGRO+CIRCULO+ RESET,
 			BLANCO+CIRCULO+RESET,
 			ROJO+CIRCULO+RESET,
@@ -39,6 +42,12 @@ public class Ficha extends Constantes implements Dibujable{
 			GRIS+CIRCULO+RESET,
 			ROJOCLARO+CIRCULO+RESET};
 	
+	/**
+	 * Construye un nuevo objeto Ficha que contiene la dificultad y obtendra segun la posicion el color al que corresponda
+	 * @param posicion  La posicion que indicaremos y coincidirá con un color
+	 * @param dificultad La dificultad de la ficha segun la partida, necesario para acceder a un array de colores y otro
+	 * @see #getColor()
+	 */
 	Ficha(Dificultad dificultad, int posicion){
 		this.dificultad = dificultad;
 		if(dificultad == Dificultad.INDIVIDUAL || dificultad == Dificultad.EXPERTO) {
@@ -47,26 +56,25 @@ public class Ficha extends Constantes implements Dibujable{
 			color = fichasDificil[posicion];
 		}
 	}
-
+	/**
+	 * Devuelve el color que se halla elegido
+	 * @return color de la ficha
+	 */
 	public String getColor() {
 		return color;
 	}
-
-	public void setColor(String color) {
-		this.color = color;
-		
-	}
 	
-	public String toString() {
-		return String.format("%s%s", color, fichasFacilMedio);
-		
-	}
+	/**
+	 * Dibuja la ficha, mostrando el circulo y el color
+	 */
 	
 	//interfaz
 	public void dibujar() {
 		System.out.printf("%s", getColor());
 	}
-	
+	/**
+	 * Compara objetos Ficha
+	 */
 	public boolean equals(Object obj) {
 		boolean resultado = false;
 		if (obj instanceof Ficha ){
@@ -75,9 +83,6 @@ public class Ficha extends Constantes implements Dibujable{
 			
 		return resultado;
 	}
-	public static void main(String[] args) {
-		Ficha f = new Ficha(Dificultad.AUTOMATICO,2);
-		f.dibujar();
-	}
+
 	
 }

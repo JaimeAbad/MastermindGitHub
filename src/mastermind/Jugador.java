@@ -2,7 +2,7 @@ package mastermind;
 
 import java.util.ArrayList;
 /**
- * Que almacena la clase
+ * Almacena el objeto del usuario jugador que va a jugar
  * 
  * @author Jaime Abad
  * @version 1.0
@@ -12,17 +12,21 @@ import java.util.ArrayList;
 //@version: es la versión actual del proyecto
 //@since: en qué versión se incluyó la clase, método, etc
 public class Jugador extends Usuario{
-
-	//private boolean repeticion = false;
+	/**
+	 * Almacena un entero que utilizaremos para modificarlo, el color, un objeto tablero, la dificultad y una lista
+	 * que será de los colores de los cuales está compuesta la combinación
+	 */
+	
 	private int i=0;
 	private int color;
-	/*esto de abajo no, si no hacerle un Tablero tablero;
-	Combinacion combinacion;*/
 	Tablero tablero;
 	Dificultad dificultad;
 	ArrayList<Integer> listaColoresCombinacion = new ArrayList<Integer>();
 	
-	//tambien habra que crear el hashMap para comparar la combinacion con la combinacion secreta
+	/**
+	 * Construye un nuevo objeto Jugador que contiene los datos de éste según el modo en el que esté
+	 * @param dificultad La dificultad en la que está en ese momento
+	 */
 	
 	Jugador(Dificultad dificultad){
 		this.dificultad=dificultad;
@@ -41,7 +45,10 @@ public class Jugador extends Usuario{
 		}
 	}
 	
-	//IMPORTANTE
+	/**
+	 * Rellena una combinación: se pide el color al usuario y se añade, tambien le pasamos el color a la lista
+	 * y una vez creada la combinacion completamente se la pasamos al tablero
+	 */
 	/*la diferencia entre rellenarCombinacion y crearCombinacionSecreta es que el rellenar lo que haCe es crear una combinacion 
 	 * y pasarla al metodo añadir combinacion del tablero, que la introducira en el arrayList;
 	 * Mientras que en el crear, solo la creara y la devolvera ya que nos hara falta para pasarsela al tablero */
@@ -64,6 +71,14 @@ public class Jugador extends Usuario{
 		tablero.añadirCombinacion(combinacion);
 		
 	}
+	
+	
+	/**
+	 * Rellena la combinación secreta que tendrá que adivinar la maquina:
+	 *  se pide el color y se añade, tambien le pasamos el color al mapa jnto con la posicion en la que está
+	 * y una vez creada la combinacion completamente se la pasamos al tablero
+	 * @return	combinacion
+	 */
 	//devuelve la combinacion para podeer metersela al tablero, la de arriba no porque el mismo metodo la pasa al tablero
 	protected Combinacion crearCombinacionSecreta() {
 		
@@ -81,6 +96,13 @@ public class Jugador extends Usuario{
 		
 		return combinacion;
 	}
+	
+	/**
+	 * Rellena una combinacion que será el resultado de la secreta y la de la maquina: 
+	 * pedimos que cree una combinacion del tamaño de la otra con  los colores correspondientes  al resultado,
+	 * una vez creada se pasa al tablero de la maquina
+	 * @param combinacion La combinacion que es intento
+	 */
 	//la combinacion que recibe es el intento de la maquina
 	protected void obtenerResultado(Combinacion combinacion/*LinkedHashMap<Integer, Integer> mapaComparacion*/) {
 		/*negro: color y posicion correctos

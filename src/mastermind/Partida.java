@@ -1,6 +1,6 @@
 package mastermind;
 /**
- * Que almacena la clase
+ * Almacena la partida
  * 
  * @author Jaime Abad
  * @version 1.0
@@ -11,13 +11,20 @@ package mastermind;
 //@since: en qué versión se incluyó la clase, método, etc
 public class Partida {
 
-	
+	/**
+	 * Almacena la dificultad e instancias de jugador, maquina y usuario
+	 */
 	
 	Dificultad dificultad;
 	Jugador jugador1;
 	Maquina maquina1, maquina2;
 	Usuario usuario;
 
+	/**
+	 * Construye un nuevo objeto Numero a partir del entero especificado
+	 * @param dificultad  La dificultad a partir del cual se crea el objeto Partida
+	 * @param usuario El usuario que va a jugar o el que va a comenzar jugando
+	 */ 
 	Partida(Dificultad dificultad, Usuario usuario){
 	
 		this.dificultad = dificultad;
@@ -43,7 +50,11 @@ public class Partida {
 		
 	}
 
-	
+	/**
+	 * Devuelve la cadena formada por los datos de la partida
+	 * @return 	Las condiciones de la partida en modo cadena
+	 * @see 	String
+	 */
 	public String toString() {
 		return String.format("Casillas: %d Colores: %s Intentos: %d Repeticion: %s",
 				dificultad.getCasilla(), dificultad.getColores(), dificultad.getIntentos(), dificultad.isRepeticion()?"si":"no");

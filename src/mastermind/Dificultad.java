@@ -1,6 +1,7 @@
 package mastermind;
 /**
- * Que almacena la clase
+ * Almacena la dificultad de cada modo, asi como sus correspondientes casillas, colores, intentos
+ *  y si tiene o no repeticion de colores
  * 
  * @author Jaime Abad
  * @version 1.0

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Que almacena la clase
+ * Almacena el objeto del usuario maquina que va a jugar
  * 
  * @author Jaime Abad
  * @version 1.0
@@ -15,10 +15,19 @@ import java.util.Random;
 //@since: en qué versión se incluyó la clase, método, etc
 public class Maquina extends Usuario{
 	
+	/**
+	 * Almacena un objeto tablero, la dificultad y una instancia de Jugador 
+	 * 
+	 */
 	Tablero tableroMaquina;
 	Jugador jugador;
 	Dificultad dificultad;
-	Combinacion combinacionRespuesta;
+	
+	
+	/**
+	 * Construye un nuevo objeto Maquina que contiene los datos de ésta según el modo en el que esté
+	 * @param dificultad La dificultad en la que está en ese momento
+	 */
 	Maquina(Dificultad dificultad){
 		this.dificultad = dificultad;
 		if(dificultad == Dificultad.INDIVIDUAL) {
@@ -41,6 +50,13 @@ public class Maquina extends Usuario{
 		}
 	}
 
+	/**
+	 * Rellena la combinación secreta que tendrá que adivinar el jugador:
+	 *  se crean colores aleatorios y se añaden a la combinacion, controlamos que no se repitan para los modos en los que no puede
+	 *   tambien le pasamos el color al mapa jnto con la posicion en la que está
+	 * y una vez creada la combinacion completamente se la pasamos al tablero
+	 * @return	combinacion
+	 */
 	//esta combinacion es la que se le pasara al tablero del jugador
 	@Override
 	protected Combinacion crearCombinacionSecreta() {
@@ -193,7 +209,12 @@ public class Maquina extends Usuario{
 		
 
 }
-
+	/**
+	 * Rellena una combinación: obtiene aleatoriamente un color y crea combinaciones de estos unicamente,
+	 * asi hasta que descubra todos los colores de la combinacion, a partir de ahi, creara combinaciones con estos colores,
+	 * controlando que no se repitan las combinaciones
+	 * una vez creada la combinacion completamente se la pasamos al tablero
+	 */
 	public void crearCombinacionPrueba() {
 		
 		int random;
@@ -321,7 +342,11 @@ public class Maquina extends Usuario{
 	}
 	
 	
-	
+	/**
+	 * Rellena una combinacion que será el resultado de la secreta y la del jugador: 
+	 * pedimos que cree una combinacion del tamaño de la otra con  los colores correspondientes  al resultado,
+	 * una vez creada se pasa al tablero del jugador
+	 */
 	public void obtenerResultado() {
 		
 		int negro=0;

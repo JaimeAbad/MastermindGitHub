@@ -24,7 +24,7 @@ public class Combinacion implements Dibujable{
 	/**
 	 * Construye un nuevo objeto Cadena que contiene el especificado número escrito en modo cadena
 	 * @param dificultad La dificultad a partir de la cual se crea la combinacion
-	 * @see añadirFicha(int)
+	 * @see #añadirFicha(int)
 	 * @see dibujar
 	 */
 	//Con # le podemos indicar un método
@@ -40,7 +40,7 @@ public class Combinacion implements Dibujable{
 	 * @param color El color que se elija
 	 * @return combinacion El array de combinacion relleno de colores(Fichas)
 	 */
-	public Ficha[] añadirFicha(int color) {
+	public Ficha[] añadirFicha(int color/*, int posicion*/) {
 		boolean ocupada = false;
 		f = new Ficha(dificultad, color);
 		/*trampa para que no me devuelva el hashcode*/
