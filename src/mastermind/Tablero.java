@@ -2,7 +2,16 @@ package mastermind;
 
 import java.util.ArrayList;
 
-
+/**
+ * Que almacena la clase
+ * 
+ * @author Jaime Abad
+ * @version 1.0
+ * @since 1.0
+ *
+ */
+//@version: es la versión actual del proyecto
+//@since: en qué versión se incluyó la clase, método, etc
 public class Tablero implements Dibujable{
 	
 	Dificultad dificultad;
@@ -34,7 +43,7 @@ public class Tablero implements Dibujable{
 
 	@Override
 	public void dibujar() {
-		System.out.printf("%s | %s", listaIntentos, listaResultados);
+		System.out.printf("%s | %s\n", listaIntentos, listaResultados);
 	}
 
 	

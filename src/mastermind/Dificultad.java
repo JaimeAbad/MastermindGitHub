@@ -1,5 +1,14 @@
 package mastermind;
-
+/**
+ * Que almacena la clase
+ * 
+ * @author Jaime Abad
+ * @version 1.0
+ * @since 1.0
+ *
+ */
+//@version: es la versión actual del proyecto
+//@since: en qué versión se incluyó la clase, método, etc
 public enum Dificultad {
 
 	INDIVIDUAL(4,8, false, 10), EXPERTO(5,8,false,15), AUTOMATICO(8,10,true,1000);

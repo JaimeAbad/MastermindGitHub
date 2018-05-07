@@ -1,6 +1,15 @@
 package mastermind;
 
-import java.util.Arrays;
+/**
+ * Que almacena la clase
+ * 
+ * @author Jaime Abad
+ * @version 1.0
+ * @since 1.0
+ *
+ */
+//@version: es la versión actual del proyecto
+//@since: en qué versión se incluyó la clase, método, etc
 
 public class Ficha extends Constantes implements Dibujable{
 
@@ -11,24 +20,24 @@ public class Ficha extends Constantes implements Dibujable{
 	public static final char CIRCULO = '\u2b24';
 	public static final char CIRCULO_PEQUEÑO = '\u23fa';
 	//en lugar de poner los espacios podemos poner los circulos, pero en lugar del fondo hay que poner el color
-	private static String[] fichasFacilMedio =  {FONDO_NEGRO+ "  "+ RESET,
-			FONDO_BLANCO+"  "+RESET,
-			FONDO_ROJO+"  "+RESET,
-			FONDO_VERDE+"  "+RESET,
-			FONDO_AMARILLO+"  "+RESET,
-			FONDO_AZUL+"  "+RESET,
-			FONDO_MORADO+"  "+RESET,
-			FONDO_CELESTE+"  "+RESET};
-	private static String[] fichasDificil = {FONDO_NEGRO+"  " + RESET,
-			FONDO_BLANCO+"  "+RESET,
-			FONDO_ROJO+"  "+RESET,
-			FONDO_VERDE+"  "+RESET,
-			FONDO_AMARILLO+"  "+RESET,
-			FONDO_AZUL+"  "+RESET,
-			FONDO_MORADO+"  "+RESET,
-			FONDO_CELESTE+"  "+RESET,
-			FONDO_GRIS+"  "+RESET,
-			FONDO_ROJOCLARO+"  "+RESET};
+	private static String[] fichasFacilMedio =  {NEGRO+CIRCULO+ RESET,
+			BLANCO+CIRCULO+RESET,
+			ROJO+CIRCULO+RESET,
+			VERDE+CIRCULO+RESET,
+			AMARILLO+CIRCULO+RESET,
+			AZUL+CIRCULO+RESET,
+			MORADO+CIRCULO+RESET,
+			CELESTE+CIRCULO+RESET};
+	private static String[] fichasDificil = {NEGRO+"  " + RESET,
+			BLANCO+CIRCULO+RESET,
+			ROJO+CIRCULO+RESET,
+			VERDE+CIRCULO+RESET,
+			AMARILLO+CIRCULO+RESET,
+			AZUL+CIRCULO+RESET,
+			MORADO+CIRCULO+RESET,
+			CELESTE+CIRCULO+RESET,
+			GRIS+CIRCULO+RESET,
+			ROJOCLARO+CIRCULO+RESET};
 	
 	Ficha(Dificultad dificultad, int posicion){
 		this.dificultad = dificultad;
@@ -66,6 +75,9 @@ public class Ficha extends Constantes implements Dibujable{
 			
 		return resultado;
 	}
-	
+	public static void main(String[] args) {
+		Ficha f = new Ficha(Dificultad.AUTOMATICO,2);
+		f.dibujar();
+	}
 	
 }
