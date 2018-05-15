@@ -106,6 +106,7 @@ public class Jugador extends Usuario{
 	 */
 	//la combinacion que recibe es el intento de la maquina
 	protected Combinacion obtenerResultado(Combinacion combinacion) {
+		//comentario prueba merge
 		Combinacion combinacionResultado = new Combinacion(dificultad);
 		/*negro: color y posicion correctos
 		 * blanco: color correcto
@@ -129,6 +130,8 @@ public class Jugador extends Usuario{
 		}
 		tablero.añadirRespuesta(combinacionResultado);
 		return combinacionResultado;
+		
+		
 	}
 	
 	
