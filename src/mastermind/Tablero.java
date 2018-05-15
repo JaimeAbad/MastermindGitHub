@@ -69,11 +69,33 @@ public class Tablero implements Dibujable{
 	@Override
 	public void dibujar() {
 		for(int i=0;i<listaIntentos.size();i++) {
-			System.out.printf("%s | %s\n", listaIntentos.get(i), listaResultados.get(i));
+			listaIntentos.get(i).dibujar();
+			System.out.printf(" | ");
+			listaResultados.get(i).dibujar();
 		}
 		
 	}
 	
+	public static void main(String[] args) {
+	Dificultad dificultad  = Dificultad.INDIVIDUAL;
+	Combinacion c = new Combinacion(dificultad);
+	Combinacion cRespuesta = new Combinacion(dificultad);
+	
+	Tablero t = new Tablero();
+	c.añadirFicha(1,0);
+	c.añadirFicha(2,1);
+	c.añadirFicha(3,2);
+	c.añadirFicha(4,3);
+	t.añadirCombinacion(c);
+	cRespuesta.añadirFicha(0,0);
+	cRespuesta.añadirFicha(0,1);
+	cRespuesta.añadirFicha(1,2);
+	cRespuesta.añadirFicha(2,3);
+	t.añadirRespuesta(cRespuesta);
+	
+	t.dibujar();
+
+}
 
 
 

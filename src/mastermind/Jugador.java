@@ -65,7 +65,6 @@ public class Jugador extends Usuario{
 			combinacion.añadirFicha(color,i);
 		}
 
-		tablero = new Tablero();
 		tablero.añadirCombinacion(combinacion);
 		
 		return combinacion;
@@ -140,17 +139,20 @@ public class Jugador extends Usuario{
 	Maquina m = new Maquina(dificultad);
 	Combinacion cJugador = new Combinacion(dificultad);
 	Combinacion cSecreta = new Combinacion(dificultad);
+	Combinacion cRespuesta = new Combinacion(dificultad);
 	//la maquina crea la combinacion secreta
 	cSecreta = m.crearCombinacionSecreta();
-	Tablero t = new Tablero(cSecreta);
+	Tablero t = new Tablero();
 	
 	//intento del jugador
 	cJugador = j.rellenarCombinacion();
 	//añadir combinacion al tablero
 	//la maquina comprueba el resultado
-	m.obtenerResultado();
+	cRespuesta = m.obtenerResultado(j.listaColoresCombinacion);
 	//añadir combinacion resultado al tablero
 	//el tablero pinta
+	t.añadirCombinacion(cJugador);
+	t.añadirRespuesta(cRespuesta);
 	t.dibujar();
 	/*Partida del jugador:
 	 * 1	la maquina crea la combinacion secreta

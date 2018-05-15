@@ -349,32 +349,46 @@ public class Maquina extends Usuario{
 	 * pedimos que cree una combinacion del tamaño de la otra con  los colores correspondientes  al resultado,
 	 * una vez creada se pasa al tablero del jugador
 	 */
-	public Combinacion obtenerResultado() {
-		
+	
+	/*debe recibir combinacion que sera la de la maquina*/
+	public Combinacion obtenerResultado(ArrayList<Integer> listaColoresCombinacion) {
+		boolean encontrado = false;
 		int negro=0;
 		int blanco=0;
 		int rojo=0;
-		jugador = new Jugador(dificultad);
+		Jugador ju = new Jugador(dificultad);
 		Combinacion combinacionResultado = new Combinacion(dificultad);
 		/*nombreMap.get(K clave); // Devuelve el valor de la clave que se le pasa como parámetro 
 		 *la clave va a ser la posicion en la lista del que estemos buscando y 
 		 * si lo que devuelve es igual a lo que hay en la lista en esa posicion coincide color y posicino*/
 			/*nombreMap.get(K clave); // Devuelve el valor de la clave que se le pasa como parámetro*/
+		//comprobamos si hay negros
+		do {
 			for(int j=0;j<dificultad.getCasilla();j++) {
-				
 				//si el mapa contiene el dato de la lista en j y i = j quiere decir que es el mismo color en la misma posicion, osea negro
-				if(mapaComparacion.containsValue(jugador.listaColoresCombinacion.get(j)) && mapaComparacion.containsKey(j)) {
+				if(ju.mapaComparacion.containsValue(listaColoresCombinacion.get(j)) && ju.mapaComparacion.containsKey(j)) {
 					negro++;
-					if(dificultad == Dificultad.INDIVIDUAL || dificultad == Dificultad.EXPERTO) {
-						jugador.listaColoresCombinacion.remove(j);
-					}
-					
-				}else if(mapaComparacion.containsValue(jugador.listaColoresCombinacion.get(j)) && !mapaComparacion.containsKey(j)) {
-					blanco++;
-					
+					ju.mapaComparacion.remove(j,listaColoresCombinacion.get(j));
+					listaColoresCombinacion.remove(j);
+					//se incrementa el contador de negros y se borra la clave y el valor del mapa y el de la lista
 				}
+			}
+			encontrado = true;//una vez recorridas todas las posiciones, ya tiene todos los negros, por lo tanto salimos
+		}while(encontrado);//este while es para que busque los negros
+			
+			//comprobamos los blancos, para este hace falta un bucle for doble
+			for(int j=0;j<ju.mapaComparacion.size();j++) {
+				for(int i=0;i<ju.mapaComparacion.size();i++) {
+					if(ju.mapaComparacion.containsValue(listaColoresCombinacion.get(j)) && !ju.mapaComparacion.containsKey(j)) {
+						blanco++;
+						ju.mapaComparacion.remove(j,listaColoresCombinacion.get(j));
+						listaColoresCombinacion.remove(j);
+					}
+				}
+			
 				
 			}
+			
 			
 		
 		rojo = combinacionResultado.dificultad.getCasilla() - negro - blanco;
@@ -388,7 +402,7 @@ public class Maquina extends Usuario{
 			combinacionResultado.añadirFicha(2,i);//el 3 es el color rojo
 		}
 		//cuando se cree la combinacion del resultado se añade al tablero que lo mete en la lista de resultados
-		tableroMaquina.añadirRespuesta(combinacionResultado);
+		ju.tablero.añadirRespuesta(combinacionResultado);
 		/*cuando se comparen y se sepa la combinacionResultado se pasara al arrayList listaResultado*/
 		return combinacionResultado;
 	}

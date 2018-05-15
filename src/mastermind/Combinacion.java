@@ -78,24 +78,29 @@ public class Combinacion implements Dibujable{
 	public void dibujar() {
 		for(int i = 0; i<dificultad.getCasilla();i++) {
 			if(combinacion[i]!= null) {
-				System.out.printf("%s ",combinacion[i].getColor());
+			combinacion[i].dibujar();
 			}
 			
 		}
 	}
 	
-//	public static void main(String[] args) {
-//		Dificultad dificultad  = Dificultad.INDIVIDUAL;
-//		Combinacion c = new Combinacion(dificultad);
-//		
-//		c.añadirFicha(1,0);
-//		c.añadirFicha(2,1);
-//		c.añadirFicha(3,2);
-//		c.añadirFicha(4,3);
-//		
-//		c.dibujar();
-//		
-//	}
+	public static void main(String[] args) {
+		Dificultad dificultad  = Dificultad.INDIVIDUAL;
+		Combinacion c = new Combinacion(dificultad);
+		Combinacion c1 = new Combinacion(dificultad);
+		c.añadirFicha(1,0);
+		c.añadirFicha(2,1);
+		c.añadirFicha(3,2);
+		c.añadirFicha(4,3);
+		
+		c1.añadirFicha(0,0);
+		c1.añadirFicha(5,1);
+		c1.añadirFicha(6,2);
+		c1.añadirFicha(7,3);
+		c.dibujar();
+		System.out.println();
+		c1.dibujar();
+	}
 
 
 }
