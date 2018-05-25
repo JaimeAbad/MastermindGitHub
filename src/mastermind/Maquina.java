@@ -22,7 +22,7 @@ public class Maquina extends Usuario{
 	Tablero tableroMaquina;
 	Jugador jugador;
 	Dificultad dificultad;
-	
+	ArrayList<Integer> listaColoresCombinacion = new ArrayList<Integer>();
 	
 	/**
 	 * Construye un nuevo objeto Maquina que contiene los datos de ésta según el modo en el que esté
@@ -224,6 +224,7 @@ public class Maquina extends Usuario{
 		ArrayList<Ficha> listaAuxiliar = new ArrayList<Ficha>();
 		ArrayList<Ficha> listaColoresEncontrados = new ArrayList<Ficha>();
 		ArrayList<Ficha> listaColoresDescartados= new ArrayList<Ficha>();
+		
 		Ficha aux;
 		
 		/*en el while: mientras este en este bucle probar combinaciones de colores individuales
@@ -240,6 +241,7 @@ public class Maquina extends Usuario{
 				listaAuxiliar.add(aux);
 				for(int j=0; j<dificultad.getCasilla(); j++) {
 					combinacion.añadirFicha(random,j);
+					listaColoresCombinacion.add(j,random);
 				}
 				tableroMaquina.añadirCombinacion(combinacion);
 			/*2º intento aleatorio pero controlando repeticion, la cantidad de combinaciones que se hacen dependera de la partida*/
@@ -293,6 +295,7 @@ public class Maquina extends Usuario{
 						listaAuxiliar.add(aux);
 						for(int j=0; j<dificultad.getCasilla(); j++) {
 							combinacion.añadirFicha(random,j);
+							listaColoresCombinacion.add(j,random);
 						}
 					}
 				}while(!contiene);

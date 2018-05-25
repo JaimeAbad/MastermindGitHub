@@ -1,6 +1,7 @@
 package mastermind;
 
 import java.util.Arrays;
+
 /**
  * Esta clase almacena una combinacion de colores, con un array de tipo Ficha
  * 
@@ -40,7 +41,8 @@ public class Combinacion implements Dibujable{
 	 * @param color El color que se elija
 	 * @return combinacion El array de combinacion relleno de colores(Fichas)
 	 */
-	public Ficha[] añadirFicha(int color, int posicion) {
+	public Combinacion añadirFicha(int color, int posicion) {
+		Combinacion c = new Combinacion(dificultad);
 		boolean ocupada = false;
 		f = new Ficha(dificultad, color);
 		/*trampa para que no me devuelva el hashcode*/
@@ -56,7 +58,7 @@ public class Combinacion implements Dibujable{
 			
 		}
 		
-		return combinacion;
+		return c;
 	}
 	
 	/**
@@ -100,6 +102,9 @@ public class Combinacion implements Dibujable{
 		c.dibujar();
 		System.out.println();
 		c1.dibujar();
+		
+		
+		
 	}
 
 

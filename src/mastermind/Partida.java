@@ -30,6 +30,7 @@ public class Partida {
 		this.dificultad = dificultad;
 		this.usuario = usuario;
 	
+		/*hacer estas condiciones en un metodo privarlo y llamarlo aqui dentro*/
 		if(dificultad == Dificultad.INDIVIDUAL && usuario == jugador1) {//hay un solo jugador
 			jugador1 = new Jugador(dificultad);
 		}else if(dificultad == Dificultad.INDIVIDUAL && usuario == maquina1) {// hay un solo jugador maquina
@@ -83,7 +84,7 @@ public class Partida {
 		}else if(menu.getModo() == 2 && menu.getOpcion()==1) {
 			dificultad = Dificultad.INDIVIDUAL;
 			Combinacion combinacionGanadora = new Combinacion(dificultad);
-			
+			//crea la combinacion ganadora, que es cuando sea todo negro
 			for(int i=0;i<dificultad.getCasilla();i++) {
 				combinacionGanadora.añadirFicha(0,i);
 			}
@@ -96,8 +97,8 @@ public class Partida {
 			tablero = new Tablero(combinacionSecreta);
 			Combinacion ultimaCombinacion = tablero.listaResultados.get(tablero.listaResultados.size()-1);
 			do {
-				jugador.rellenarCombinacion();
-				maquina1.obtenerResultado();
+				combinacion = jugador.rellenarCombinacion();
+				maquina1.obtenerResultado(jugador.listaColoresCombinacion);
 				tablero.dibujar();
 				
 				
@@ -160,7 +161,7 @@ public class Partida {
 			do {
 				//el jugador crea una combinacion y la maquina le devuelve el resultado, asi hast q acaben los intentos o una acierte
 				jugador.rellenarCombinacion();
-				maquina1.obtenerResultado();
+				maquina1.obtenerResultado(jugador.listaColoresCombinacion);
 				maquina1.crearCombinacionPrueba();
 				jugador.obtenerResultado(ultimaCombinacionJugador);
 				tableroJugador.dibujar();
@@ -201,7 +202,7 @@ public class Partida {
 				maquina1.crearCombinacionPrueba();
 				jugador.obtenerResultado(ultimaCombinacionJugador);
 				jugador.rellenarCombinacion();
-				maquina1.obtenerResultado();
+				maquina1.obtenerResultado(jugador.listaColoresCombinacion);
 				tableroMaquina.dibujar();
 				tableroJugador.dibujar();
 				
@@ -236,11 +237,11 @@ public class Partida {
 			Combinacion ultimaCombinacionMaquina2= tablero.listaResultados.get(tablero.listaResultados.size()-1);
 			Combinacion ultimaCombinacionMaquina = tableroMaquina.listaResultados.get(tableroMaquina.listaResultados.size()-1);
 			do {
-				//el jugador crea una combinacion y la maquina le devuelve el resultado, asi hast q acaben los intentos o una acierte
+				//el jugador crea una combinacion y la maquina le devuelve el resultado, asi hasta q acaben los intentos o una acierte
 				maquina1.crearCombinacionPrueba();
-				maquina2.obtenerResultado();
-				maquina2.rellenarCombinacion();
-				maquina1.obtenerResultado();
+				maquina2.obtenerResultado(maquina1.listaColoresCombinacion);
+				maquina2.crearCombinacionPrueba();
+				maquina1.obtenerResultado(maquina2.listaColoresCombinacion);
 				tableroMaquina.dibujar();
 				tablero.dibujar();
 				
@@ -276,10 +277,10 @@ public class Partida {
 			Combinacion ultimaCombinacionMaquina = tableroMaquina.listaResultados.get(tableroMaquina.listaResultados.size()-1);
 			do {
 				//el jugador crea una combinacion y la maquina le devuelve el resultado, asi hast q acaben los intentos o una acierte
-				maquina2.rellenarCombinacion();
-				maquina1.obtenerResultado();
+				maquina2.crearCombinacionPrueba();
+				maquina1.obtenerResultado(maquina2.listaColoresCombinacion);
 				maquina1.crearCombinacionPrueba();
-				maquina2.obtenerResultado();
+				maquina2.obtenerResultado(maquina1.listaColoresCombinacion);
 				tablero.dibujar();
 				tableroMaquina.dibujar();
 				

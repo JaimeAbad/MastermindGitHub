@@ -31,6 +31,7 @@ public class Tablero implements Dibujable{
 	Tablero(){
 		
 	}
+	//este no me hace falta ya que aqui no se comprueba
 	Tablero(Combinacion combinacionSecreta){
 		this.combinacionSecreta = combinacionSecreta;
 	}

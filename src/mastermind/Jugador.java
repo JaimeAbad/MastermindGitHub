@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 //@version: es la versión actual del proyecto
 //@since: en qué versión se incluyó la clase, método, etc
-public class Jugador extends Usuario{
+public class Jugador extends Usuario {
 	/**
 	 * Almacena el color, un objeto tablero, la dificultad y una lista
 	 * que será de los colores de los cuales está compuesta la combinación
@@ -65,6 +65,7 @@ public class Jugador extends Usuario{
 			combinacion.añadirFicha(color,i);
 		}
 
+		tablero = new Tablero();
 		tablero.añadirCombinacion(combinacion);
 		
 		return combinacion;
@@ -106,6 +107,9 @@ public class Jugador extends Usuario{
 	 */
 	//la combinacion que recibe es el intento de la maquina
 	protected Combinacion obtenerResultado(Combinacion combinacion) {
+		//muestra la combinacion de la maquina
+		combinacion.dibujar();
+		System.out.println();
 		//comentario prueba merge
 		Combinacion combinacionResultado = new Combinacion(dificultad);
 		/*negro: color y posicion correctos
@@ -117,16 +121,11 @@ public class Jugador extends Usuario{
 				+ "	2 - Rojo: Ni color ni posicion correctos");
 		
 		for(int i = 0;i<dificultad.getCasilla();i++) {
-			System.out.println("Posicion: " + i + " Color :");
-			color = Teclado.leerEntero();
-			
-			if(color>=3) {
-				System.out.println("Posicion: " + i + " Color :");
+			do {
+				System.out.println("Posicion: " + i + " Color: ");
 				color = Teclado.leerEntero();
-			}else{
-				combinacionResultado.añadirFicha(color,i);
-				i++;
-			}
+			}while(color>=3);
+			combinacionResultado.añadirFicha(color,i);
 		}
 		tablero.añadirRespuesta(combinacionResultado);
 		return combinacionResultado;
@@ -135,34 +134,58 @@ public class Jugador extends Usuario{
 	}
 	
 	
-	public static void main(String[] args) {
+//	public static void main(String[] args) {
 	
-	Dificultad dificultad  = Dificultad.INDIVIDUAL;
-	Jugador j = new Jugador(dificultad);
-	Maquina m = new Maquina(dificultad);
-	Combinacion cJugador = new Combinacion(dificultad);
-	Combinacion cSecreta = new Combinacion(dificultad);
-	Combinacion cRespuesta = new Combinacion(dificultad);
-	//la maquina crea la combinacion secreta
-	cSecreta = m.crearCombinacionSecreta();
-	Tablero t = new Tablero();
-	
-	//intento del jugador
-	cJugador = j.rellenarCombinacion();
-	//añadir combinacion al tablero
-	//la maquina comprueba el resultado
-	cRespuesta = m.obtenerResultado(j.listaColoresCombinacion);
-	//añadir combinacion resultado al tablero
-	//el tablero pinta
-	t.añadirCombinacion(cJugador);
-	t.añadirRespuesta(cRespuesta);
-	t.dibujar();
+//	Dificultad dificultad  = Dificultad.INDIVIDUAL;
+//	Jugador j = new Jugador(dificultad);
+//	Maquina m = new Maquina(dificultad);
+//	Combinacion cJugador = new Combinacion(dificultad);
+//	Combinacion c = new Combinacion(dificultad);
+//	Combinacion cSecreta = new Combinacion(dificultad);
+//	Combinacion cRespuesta = new Combinacion(dificultad);
+//	//la maquina crea la combinacion secreta
+//	cSecreta = m.crearCombinacionSecreta();
+//	Tablero t = new Tablero();
+//	
+//	//intento del jugador
+//	cJugador = j.rellenarCombinacion();
+//	//añadir combinacion al tablero
+//	//la maquina comprueba el resultado
+//	cRespuesta = m.obtenerResultado(j.listaColoresCombinacion);
+//	//añadir combinacion resultado al tablero
+//	//el tablero pinta
+//	t.añadirCombinacion(cJugador);
+//	t.añadirRespuesta(cRespuesta);
+//	t.dibujar();
 	/*Partida del jugador:
 	 * 1	la maquina crea la combinacion secreta
 	 * 2 	el jugador prueba el intento
 	 * 3	la maquina devuelve el resultado de ese intento
 	 * 4. el tablero tiene esos intentos y resultados y los pinta*/
+
 	
-}
+	
+	
+	/*Prueba de metodo que crea la combinacion secreta: PASADA
+	 * cJugador = j.crearCombinacionSecreta();
+	cJugador.dibujar();*/
+	
+	/*Prueba de metodo que rellena una combinacion: PASADA
+	Combinacion c1 = new Combinacion(dificultad);
+	c1 = j.rellenarCombinacion();
+	c1.dibujar();*/
+	
+	/*prueba metodo que devuelve resultado de la combinacion: PASADA
+	cJugador = j.crearCombinacionSecreta();
+	cJugador.dibujar();
+	Combinacion c1 = new Combinacion(dificultad);
+	c1 = j.rellenarCombinacion();
+	c1.dibujar(); este no hace falta pq y lo tiene el metodo obtenerResultado
+	Combinacion c2 = new Combinacion(dificultad);
+	c2 = j.obtenerResultado(c1);
+	c2.dibujar();*/
+	
+//}
+
 
 }
