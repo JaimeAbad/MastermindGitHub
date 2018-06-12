@@ -1,4 +1,4 @@
-package mastermind;
+	package mastermind;
 
 import java.util.ArrayList;
 
@@ -22,7 +22,7 @@ public class Tablero implements Dibujable{
 	Combinacion combinacion, combinacionSecreta;
 	ArrayList<Combinacion> listaResultados = new ArrayList<Combinacion>();
 	ArrayList<Combinacion> listaIntentos = new ArrayList<Combinacion>();
-	
+	ArrayList<Jugada> listaJugadasTablero = new ArrayList<Jugada>();
 	
 	/**
 	 * Almacena la combinacion secreta
@@ -42,9 +42,8 @@ public class Tablero implements Dibujable{
 	 * @return 	La combinacion
 	 * @see 	Combinacion
 	 */
-	public Combinacion añadirCombinacion(Combinacion combinacion) {
+	public void añadirCombinacion(Combinacion combinacion) {
 		listaIntentos.add(combinacion);
-		return combinacion;
 	}
 	/**
 	 * Devuelve la combinacion resultado
@@ -52,11 +51,14 @@ public class Tablero implements Dibujable{
 	 * @return 	La combinacion
 	 * @see 	Combinacion
 	 */
-	public Combinacion añadirRespuesta(Combinacion combinacion) {
+	public void añadirRespuesta(Combinacion combinacion) {
 		listaResultados.add(combinacion);
-		return combinacion;
 	}
 	
+	public void añadirJugada(Combinacion c, Combinacion res) {
+		Jugada j = new Jugada(c,res);
+		listaJugadasTablero.add(j);
+	}
 
 	
 //	public String toString() {
@@ -69,34 +71,64 @@ public class Tablero implements Dibujable{
 
 	@Override
 	public void dibujar() {
-		for(int i=0;i<listaIntentos.size();i++) {
-			listaIntentos.get(i).dibujar();
-			System.out.printf(" | ");
-			listaResultados.get(i).dibujar();
+		for(int i=0;i<listaJugadasTablero.size();i++) {
+//			listaIntentos.get(i).dibujar();
+//			System.out.printf(" | ");
+//			listaResultados.get(i).dibujar();
+			System.out.printf(i + 1 +" | ");
+			listaJugadasTablero.get(i).dibujar();
 		}
 		
 	}
 	
-	public static void main(String[] args) {
-	Dificultad dificultad  = Dificultad.INDIVIDUAL;
-	Combinacion c = new Combinacion(dificultad);
-	Combinacion cRespuesta = new Combinacion(dificultad);
+	public void dibujarTablerosMedioDificil(Jugador jugador1, Jugador jugador2) {
+		String j1, j2;
+		
+		//encabezado del tablero formado por los dos tableros
+		if(dificultad == Dificultad.EXPERTO) {
+			j1 = "Usuario";
+			j2 = "Máquina";
+		}else {
+			j1 = "Máquina 1";
+			j2 = "Máquina 2";
+		}
+		
+		
+		System.out.printf("TABLERO 1: %-75s		TABLERO 2: %s",j1,j2);
+		System.out.printf("-------------------------------------------");
+		
+		//ir mostrando las jugas
+		for(int i=0; i< listaJugadasTablero.size();i++) {
+			System.out.printf("Jugada %n",i+1);
+			jugador1.getTablero().listaJugadasTablero.get(i).dibujar();
+			jugador2.getTablero().listaJugadasTablero.get(i).dibujar();
+			System.out.printf("\n");
+		}
+		
+	}
 	
-	Tablero t = new Tablero();
-	c.añadirFicha(1,0);
-	c.añadirFicha(2,1);
-	c.añadirFicha(3,2);
-	c.añadirFicha(4,3);
-	t.añadirCombinacion(c);
-	cRespuesta.añadirFicha(0,0);
-	cRespuesta.añadirFicha(0,1);
-	cRespuesta.añadirFicha(1,2);
-	cRespuesta.añadirFicha(2,3);
-	t.añadirRespuesta(cRespuesta);
-	
-	t.dibujar();
-
-}
+//	public static void main(String[] args) {
+//	Dificultad dificultad  = Dificultad.INDIVIDUAL;
+//	Combinacion c = new Combinacion(dificultad);
+//	Combinacion cRespuesta = new Combinacion(dificultad);
+//	
+//	Tablero t = new Tablero();
+//	c.añadirFicha(1,0);
+//	c.añadirFicha(2,1);
+//	c.añadirFicha(3,2);
+//	c.añadirFicha(4,3);
+//	//t.añadirCombinacion(c);
+//	cRespuesta.añadirFicha(0,0);
+//	cRespuesta.añadirFicha(0,1);
+//	cRespuesta.añadirFicha(1,2);
+//	cRespuesta.añadirFicha(2,3);
+//	//t.añadirRespuesta(cRespuesta);
+//	
+//	t.añadirJugada(c, cRespuesta);
+//	
+//	t.dibujar();
+//
+//}
 
 
 

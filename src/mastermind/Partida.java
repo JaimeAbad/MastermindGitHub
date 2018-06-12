@@ -1,4 +1,6 @@
 package mastermind;
+
+
 /**
  * Almacena la partida
  * 
@@ -16,40 +18,22 @@ public class Partida {
 	 */
 	
 	Dificultad dificultad;
-	Jugador jugador1;
-	Maquina maquina1, maquina2;
-	Usuario usuario;
+	private Jugador jugador1;
+	private Jugador jugador2;
 
 	/**
 	 * Construye un nuevo objeto Numero a partir del entero especificado
 	 * @param dificultad  La dificultad a partir del cual se crea el objeto Partida
 	 * @param usuario El usuario que va a jugar o el que va a comenzar jugando
 	 */ 
-	Partida(Dificultad dificultad, Usuario usuario){
+	Partida(Dificultad dificultad, Jugador jugador1, Jugador jugador2){
 	
 		this.dificultad = dificultad;
-		this.usuario = usuario;
-	
-		/*hacer estas condiciones en un metodo privarlo y llamarlo aqui dentro*/
-		if(dificultad == Dificultad.INDIVIDUAL && usuario == jugador1) {//hay un solo jugador
-			jugador1 = new Jugador(dificultad);
-		}else if(dificultad == Dificultad.INDIVIDUAL && usuario == maquina1) {// hay un solo jugador maquina
-			maquina1 = new Maquina(dificultad);
-		}else if(dificultad == Dificultad.EXPERTO && usuario == jugador1){//modo medio comienza jugador
-			jugador1 = new Jugador(dificultad);
-			maquina1 = new Maquina(dificultad);
-		}else if(dificultad == Dificultad.EXPERTO && usuario == maquina1){//modo medio comienza maquina
-			maquina1 = new Maquina(dificultad);
-			jugador1 = new Jugador(dificultad);
-		}else if(dificultad == Dificultad.AUTOMATICO && usuario == maquina1) {//modo dificil comienza maquina1
-			maquina1 = new Maquina(dificultad);
-			maquina2 = new Maquina(dificultad);
-		}else if(dificultad == Dificultad.AUTOMATICO && usuario == maquina2) {//modo dificil comienza maquina2
-			maquina2 = new Maquina(dificultad);
-			maquina1 = new Maquina(dificultad);
-		}
+		this.jugador1 = jugador1;
+		this.jugador2 = jugador2;
 		
 	}
+	
 
 	/**
 	 * Devuelve la cadena formada por los datos de la partida
@@ -62,240 +46,142 @@ public class Partida {
 	}
 	
 	
-	public static void main(String[] args) {
-		
-
-		Menu menu = new Menu();
-		Partida partida; 
-		Jugador jugador;
-		Maquina maquina1;
-		Maquina maquina2;
-		Dificultad dificultad;
+	public void iniciarPartida() {
 		int intento= 0;
-		Tablero tableroJugador, tableroMaquina, tablero;
-		Combinacion combinacion;
-		Combinacion combinacionSecreta;
-		Combinacion combinacionSecretaAux;
+		boolean ganador = false;
+		Combinacion combinacion = new Combinacion(dificultad);
+		Combinacion combinacionResultado = new Combinacion(dificultad);
+		Combinacion combinacionIntento = new Combinacion(dificultad);
+		Combinacion combinacionRes = new Combinacion(dificultad);//las dos ultimas para la maquina o la maquina2
+		Combinacion combinacionSecreta = new Combinacion(dificultad);
+		Combinacion combinacionSecretaAux = new Combinacion(dificultad);
 		
-		//consultar instrucciones
-		if(menu.getModo() == 1) {
-			menu.toString();
-//		modo facil, juega el usuario
-		}else if(menu.getModo() == 2 && menu.getOpcion()==1) {
-			dificultad = Dificultad.INDIVIDUAL;
-			Combinacion combinacionGanadora = new Combinacion(dificultad);
-			//crea la combinacion ganadora, que es cuando sea todo negro
-			for(int i=0;i<dificultad.getCasilla();i++) {
-				combinacionGanadora.añadirFicha(0,i);
-			}
-			
-			jugador = new Jugador(dificultad);
-			maquina1 = new Maquina(dificultad);
-			partida = new Partida(dificultad, jugador);
-			
-			combinacionSecreta = maquina1.crearCombinacionSecreta();
-			tablero = new Tablero(combinacionSecreta);
-			Combinacion ultimaCombinacion = tablero.listaResultados.get(tablero.listaResultados.size()-1);
-			do {
-				combinacion = jugador.rellenarCombinacion();
-				maquina1.obtenerResultado(jugador.listaColoresCombinacion);
-				tablero.dibujar();
+		//MODO FÁCIL COMPLETO
+		if(dificultad == Dificultad.INDIVIDUAL) {
+			if(jugador1 instanceof Usuario) {
+				combinacionSecreta = ((Maquina)jugador2).crearCombinacionSecreta();
+				System.out.println("La máquina ha creado la combinacion secreta");
+				
+				do {
+					System.out.println("Rellena la combinacion del intento: ");
+					combinacionIntento = ((Usuario)jugador1).rellenarCombinacion();
+					intento++;
+					combinacionResultado = ((Maquina)jugador2).obtenerResultado(combinacionIntento);
+					System.out.println("La maquina ha devuelto la respuesta");
+					jugador1.getTablero().añadirJugada(combinacionIntento, combinacionResultado);
+					jugador1.getTablero().dibujar();
+					
+					
+					if(jugador1.comprobarGanador(combinacionIntento, combinacionSecreta)) {
+						System.out.println("¡¡¡¡¡¡¡¡¡¡¡HAS GANADOOO!!!!!!!!!!!");
+						ganador = true;
+					}else if(intento == dificultad.getIntentos() && !ganador) {
+						System.out.println("LOSER ..... ");
+					}else {
+						System.out.println("Estás más cerca, sigue intentándolo !!");
+						
+					}
+					
+					
+				
+				}while(intento<dificultad.getIntentos() && !ganador);
 				
 				
-			}while(intento<=dificultad.getIntentos()  || combinacionGanadora.equals(ultimaCombinacion)==true);
+			}	
 			
-			if(intento == dificultad.getIntentos()) {
-				System.out.println("LOSER, te has quedado sin intentos");
-			}
-			if(combinacionGanadora.equals(ultimaCombinacion)==true) {
-				System.out.println("CONGRATS!!!! YOU WIN!!!");
-			}
+			//MODO MEDIO
+		}else if(dificultad == Dificultad.EXPERTO) {
 			
-//		modo facil, juega la maquina
-		}else if(menu.getModo() == 2 && menu.getOpcion()==2) {
-			dificultad = Dificultad.INDIVIDUAL;
-			Combinacion combinacionGanadora = new Combinacion(dificultad);
+			combinacionSecreta = ((Maquina)jugador2).crearCombinacionSecreta();
+			System.out.println("La máquina ha creado la combinacion secreta para el usuario");
+			combinacionSecretaAux = ((Usuario)jugador1).crearCombinacionSecreta();
+			System.out.println("El usuario ha creado la combinacion secreta para la maquina");
 			
-			for(int i=0;i<dificultad.getCasilla();i++) {
-				combinacionGanadora.añadirFicha(0,i);
-			}
-			
-			jugador = new Jugador(dificultad);
-			maquina1 = new Maquina(dificultad);
-			partida = new Partida(dificultad, maquina1);
-			
-			combinacionSecreta = jugador.crearCombinacionSecreta();
-			tablero = new Tablero(combinacionSecreta);
-			Combinacion ultimaCombinacion = tablero.listaResultados.get(tablero.listaResultados.size()-1);
 			do {
-				maquina1.crearCombinacionPrueba();
-				jugador.obtenerResultado(ultimaCombinacion);
-				tablero.dibujar();
-			}while(intento<=dificultad.getIntentos()  || combinacionGanadora.equals(ultimaCombinacion)==true);
-			
-			if(intento == dificultad.getIntentos()) {
-				System.out.println("LA MAQUINA HA PERDIDO...");
-			}
-			if(combinacionGanadora.equals(ultimaCombinacion)==true) {
-				System.out.println("LA MAQUINA ES UNA MAQUINA, HA GANADO!!");
-			}
-//		modo medio empieza el jugador
-		}else if(menu.getModo() == 3 && menu.getOpcion() == 1) {
-			dificultad = Dificultad.EXPERTO;
-			Combinacion combinacionGanadora = new Combinacion(dificultad);
-			
-			for(int i=0;i<dificultad.getCasilla();i++) {
-				combinacionGanadora.añadirFicha(0,i);
-			}
-			
-			jugador = new Jugador(dificultad);
-			maquina1 = new Maquina(dificultad);
-			partida = new Partida(dificultad, jugador);
-			
-			combinacionSecretaAux = jugador.crearCombinacionSecreta();
-			combinacionSecreta = maquina1.crearCombinacionSecreta();
-			tableroJugador = new Tablero(combinacionSecreta);
-			tableroMaquina = new Tablero(combinacionSecretaAux);
-			Combinacion ultimaCombinacionJugador = tableroJugador.listaResultados.get(tableroJugador.listaResultados.size()-1);
-			Combinacion ultimaCombinacionMaquina = tableroMaquina.listaResultados.get(tableroMaquina.listaResultados.size()-1);
-			do {
-				//el jugador crea una combinacion y la maquina le devuelve el resultado, asi hast q acaben los intentos o una acierte
-				jugador.rellenarCombinacion();
-				maquina1.obtenerResultado(jugador.listaColoresCombinacion);
-				maquina1.crearCombinacionPrueba();
-				jugador.obtenerResultado(ultimaCombinacionJugador);
-				tableroJugador.dibujar();
-				tableroMaquina.dibujar();
+				System.out.println("El usuario rellenará la combinacion del intento: ");
+				combinacionIntento = ((Usuario)jugador1).rellenarCombinacion();
+				combinacionResultado = ((Maquina)jugador2).obtenerResultado(combinacionIntento);
+				System.out.println("La maquina ha devuelto la respuesta");
+				jugador1.getTablero().añadirJugada(combinacionIntento, combinacionResultado);
+				jugador1.getTablero().dibujar();
 				
-			}while(intento<=dificultad.getIntentos()  || combinacionGanadora.equals(ultimaCombinacionJugador)==true || combinacionGanadora.equals(ultimaCombinacionMaquina)==true );
+				System.out.println("La máqunia rellenará la combinacion del intento");
+				combinacion = ((Maquina)jugador2).crearCombinacionPrueba();
+				combinacionRes = ((Usuario)jugador1).obtenerResultado(combinacion);
+				System.out.println("El usuario ha devuelto la respuesta");
+				jugador2.getTablero().añadirJugada(combinacion, combinacionRes);
+				jugador2.getTablero().dibujar();
+				
+				
+				
+				intento++;
+				if(jugador1.comprobarGanador(combinacionIntento, combinacionSecreta) && jugador2.comprobarGanador(combinacion, combinacionSecretaAux)) {
+					System.out.println("¡¡¡¡¡¡¡¡¡¡¡TENEMOS EMPATE!!!!!!!!!!!");
+					ganador = true;
+				}else if(jugador1.comprobarGanador(combinacionIntento, combinacionSecreta) && !jugador2.comprobarGanador(combinacion, combinacionSecretaAux)){
+					System.out.println("Ha ganado el jugador 1, EL USUARIO, ENHORABUENA!!!!!!");
+					ganador = true;
+				}else if(!jugador1.comprobarGanador(combinacionIntento, combinacionSecreta) && jugador2.comprobarGanador(combinacion, combinacionSecretaAux)) {
+					System.out.println("Ha ganado el jugador 2, LA MÁQUINA, lo sentimos.....");
+					ganador = true;
+				}else if(intento == dificultad.getIntentos() && !ganador) {
+					System.out.println("LOSER ..... ");
+				}else {
+					System.out.println("Estáis más cerca, seguid intentándolo !!");
+					
+				}
+				
+				
 			
-			if(intento == dificultad.getIntentos()) {
-				System.out.println("TENEMOS EMPATE!!!!!!!!!!");
-			}
-			if(combinacionGanadora.equals(ultimaCombinacionJugador)==true) {
-				System.out.println("EL JUGADOR SE IMPONE, CONGRATULATIONS!!");
-			}else if(combinacionGanadora.equals(ultimaCombinacionMaquina)==true) {
-				System.out.println("OTRA DEMOSTRACION DE QUE LA IA SUPERA AL SER HUMANO");
-			}
+			}while(intento<dificultad.getIntentos() && !ganador);
 
-//		modo medio empieza la maquina
-		}else if(menu.getModo() == 3 && menu.getOpcion() == 2) {
-			dificultad = Dificultad.EXPERTO;
-			Combinacion combinacionGanadora = new Combinacion(dificultad);
-			
-			for(int i=0;i<dificultad.getCasilla();i++) {
-				combinacionGanadora.añadirFicha(0,i);
-			}
-			
-			jugador = new Jugador(dificultad);
-			maquina1 = new Maquina(dificultad);
-			partida = new Partida(dificultad,maquina1);
-			
-			combinacionSecretaAux = jugador.crearCombinacionSecreta();
-			combinacionSecreta = maquina1.crearCombinacionSecreta();
-			tableroJugador = new Tablero(combinacionSecreta);
-			tableroMaquina = new Tablero(combinacionSecretaAux);
-			Combinacion ultimaCombinacionJugador = tableroJugador.listaResultados.get(tableroJugador.listaResultados.size()-1);
-			Combinacion ultimaCombinacionMaquina = tableroMaquina.listaResultados.get(tableroMaquina.listaResultados.size()-1);
-			do {
-				//el jugador crea una combinacion y la maquina le devuelve el resultado, asi hast q acaben los intentos o una acierte
-				maquina1.crearCombinacionPrueba();
-				jugador.obtenerResultado(ultimaCombinacionJugador);
-				jugador.rellenarCombinacion();
-				maquina1.obtenerResultado(jugador.listaColoresCombinacion);
-				tableroMaquina.dibujar();
-				tableroJugador.dibujar();
-				
-				
-			}while(intento<=dificultad.getIntentos()  || combinacionGanadora.equals(ultimaCombinacionJugador)==true || combinacionGanadora.equals(ultimaCombinacionMaquina)==true );
-			
-			if(intento == dificultad.getIntentos()) {
-				System.out.println("TENEMOS EMPATE!!!!!!!!!!");
-			}
-			if(combinacionGanadora.equals(ultimaCombinacionJugador)==true) {
-				System.out.println("EL JUGADOR SE IMPONE, CONGRATULATIONS!!");
-			}else if(combinacionGanadora.equals(ultimaCombinacionMaquina)==true) {
-				System.out.println("OTRA DEMOSTRACION DE QUE LA IA SUPERA AL SER HUMANO");
-			}
-//		modo dificil empieza maquina1
-		}else if(menu.getModo() == 4) {
-			dificultad = Dificultad.AUTOMATICO;
-			Combinacion combinacionGanadora = new Combinacion(dificultad);
-			
-			for(int i=0;i<dificultad.getCasilla();i++) {
-				combinacionGanadora.añadirFicha(0,i);
-			}
-			
-			maquina2 = new Maquina(dificultad);
-			maquina1 = new Maquina(dificultad);
-			partida = new Partida(dificultad, maquina1);
-			
-			combinacionSecretaAux = maquina2.crearCombinacionSecreta();
-			combinacionSecreta = maquina1.crearCombinacionSecreta();
-			tablero = new Tablero(combinacionSecreta);
-			tableroMaquina = new Tablero(combinacionSecretaAux);
-			Combinacion ultimaCombinacionMaquina2= tablero.listaResultados.get(tablero.listaResultados.size()-1);
-			Combinacion ultimaCombinacionMaquina = tableroMaquina.listaResultados.get(tableroMaquina.listaResultados.size()-1);
-			do {
-				//el jugador crea una combinacion y la maquina le devuelve el resultado, asi hasta q acaben los intentos o una acierte
-				maquina1.crearCombinacionPrueba();
-				maquina2.obtenerResultado(maquina1.listaColoresCombinacion);
-				maquina2.crearCombinacionPrueba();
-				maquina1.obtenerResultado(maquina2.listaColoresCombinacion);
-				tableroMaquina.dibujar();
-				tablero.dibujar();
-				
-			}while(intento<=dificultad.getIntentos()  || combinacionGanadora.equals(ultimaCombinacionMaquina2)==true || combinacionGanadora.equals(ultimaCombinacionMaquina)==true );
-			
-			if(intento == dificultad.getIntentos()) {
-				System.out.println("TENEMOS EMPATE!!!!!!!!!!");
-			}
-			if(combinacionGanadora.equals(ultimaCombinacionMaquina2)==true) {
-				System.out.println("LA IA SECUNDARIA VENCE A LA PRINCIPAL");
-			}else if(combinacionGanadora.equals(ultimaCombinacionMaquina)==true) {
-				System.out.println("LA IA PRINCIPAL VENCE A LA SECUNDARIA");
-			}
 
-//		modo dificil empieza maquina2
-		}else if(menu.getModo() == 4) {
-			dificultad = Dificultad.AUTOMATICO;
-			Combinacion combinacionGanadora = new Combinacion(dificultad);
+			//MODO DIFICIL
+		}else if(dificultad == Dificultad.AUTOMATICO) {
+			combinacionSecreta = ((Maquina)jugador2).crearCombinacionSecreta();
+			System.out.println("La máquina2 ha creado la combinacion secreta para la maquina1");
+			combinacionSecretaAux = ((Maquina)jugador1).crearCombinacionSecreta();
+			System.out.println("La maquina1 ha creado la combinacion secreta para la maquina2");
 			
-			for(int i=0;i<dificultad.getCasilla();i++) {
-				combinacionGanadora.añadirFicha(0,i);
-			}
-			
-			maquina2 = new Maquina(dificultad);
-			maquina1 = new Maquina(dificultad);
-			partida = new Partida(dificultad, maquina1);
-			
-			combinacionSecretaAux = maquina2.crearCombinacionSecreta();
-			combinacionSecreta = maquina1.crearCombinacionSecreta();
-			tablero = new Tablero(combinacionSecreta);
-			tableroMaquina = new Tablero(combinacionSecretaAux);
-			Combinacion ultimaCombinacionMaquina2= tablero.listaResultados.get(tablero.listaResultados.size()-1);
-			Combinacion ultimaCombinacionMaquina = tableroMaquina.listaResultados.get(tableroMaquina.listaResultados.size()-1);
 			do {
-				//el jugador crea una combinacion y la maquina le devuelve el resultado, asi hast q acaben los intentos o una acierte
-				maquina2.crearCombinacionPrueba();
-				maquina1.obtenerResultado(maquina2.listaColoresCombinacion);
-				maquina1.crearCombinacionPrueba();
-				maquina2.obtenerResultado(maquina1.listaColoresCombinacion);
-				tablero.dibujar();
-				tableroMaquina.dibujar();
+				System.out.println("La máquina 1 rellenará la combinacion del intento: ");
+				combinacionIntento = ((Maquina)jugador1).rellenarCombinacion();
+				combinacionResultado = ((Maquina)jugador2).obtenerResultado(combinacionIntento);
+				System.out.println("La maquina2 ha devuelto la respuesta");
+				jugador1.getTablero().añadirJugada(combinacionIntento, combinacionResultado);
+				jugador1.getTablero().dibujar();
 				
-			}while(intento<=dificultad.getIntentos()  || combinacionGanadora.equals(ultimaCombinacionMaquina2)==true || combinacionGanadora.equals(ultimaCombinacionMaquina)==true );
+				System.out.println("La máquina2 rellenará la combinacion del intento");
+				combinacion = ((Maquina)jugador2).crearCombinacionPrueba();
+				combinacionRes = ((Maquina)jugador1).obtenerResultado(combinacion);
+				System.out.println("La máquina1 ha devuelto la respuesta");
+				jugador2.getTablero().añadirJugada(combinacion, combinacionRes);
+				jugador2.getTablero().dibujar();
+				
+				
+				
+				intento++;
+				if(jugador1.comprobarGanador(combinacionIntento, combinacionSecreta) && jugador2.comprobarGanador(combinacion, combinacionSecretaAux)) {
+					System.out.println("¡¡¡¡¡¡¡¡¡¡¡TENEMOS EMPATE!!!!!!!!!!!");
+					ganador = true;
+				}else if(jugador1.comprobarGanador(combinacionIntento, combinacionSecreta) && !jugador2.comprobarGanador(combinacion, combinacionSecretaAux)){
+					System.out.println("Ha ganado el jugador 1, LA MÁQUINA1, ENHORABUENA!!!!!!");
+					ganador = true;
+				}else if(!jugador1.comprobarGanador(combinacionIntento, combinacionSecreta) && jugador2.comprobarGanador(combinacion, combinacionSecretaAux)) {
+					System.out.println("Ha ganado el jugador 2, LA MÁQUINA2, ENHORABUENA!!!!!!");
+					ganador = true;
+				}else if(intento == dificultad.getIntentos() && !ganador) {
+					System.out.println("LOSER ..... ");
+				}else {
+					System.out.println("Estáis más cerca, seguid intentándolo !!");
+					
+				}
 			
-			if(intento == dificultad.getIntentos()) {
-				System.out.println("TENEMOS EMPATE!!!!!!!!!!");
-			}
-			if(combinacionGanadora.equals(ultimaCombinacionMaquina2)==true) {
-				System.out.println("LA IA SECUNDARIA VENCE A LA PRINCIPAL");
-			}else if(combinacionGanadora.equals(ultimaCombinacionMaquina)==true) {
-				System.out.println("LA IA PRINCIPAL VENCE A LA SECUNDARIA");
-			}
+			}while(intento<dificultad.getIntentos() && !ganador);
+			
 		}
 		
 	}
+
 
 }

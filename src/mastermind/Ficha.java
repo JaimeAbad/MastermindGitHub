@@ -33,7 +33,7 @@ public class Ficha implements Dibujable{
 			"\u001B[34m"+CIRCULO+"\u001B[0m",
 			"\u001B[35m"+CIRCULO+"\u001B[0m",
 			"\u001B[36m"+CIRCULO+"\u001B[0m"};
-	private static String[] fichasDificil = {"\u001B[30m"+"  " + "\u001B[0m",
+	private static String[] fichasDificil = {"\u001B[30m"+ CIRCULO + "\u001B[0m",
 			"\u001B[37m"+CIRCULO+"\u001B[0m",
 			"\u001B[31m"+CIRCULO+"\u001B[0m",
 			"\u001B[32m"+CIRCULO+"\u001B[0m",

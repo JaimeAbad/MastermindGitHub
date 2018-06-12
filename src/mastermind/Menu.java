@@ -1,4 +1,7 @@
 package mastermind;
+
+import mastermind.Teclado.Rango;
+
 /**
  *	Almacena el menu del juego
  * 
@@ -17,45 +20,13 @@ public class Menu {
 	 */
 	private int modo;
 	private int opcion;
-	private String instrucciones = "Se juega en un tablero con fichas blancas,negras y rojas que se utilizaran para el resultado"
-			+ " y de otros colores para la combinacion"
-			+ " Uno de los jugadores escoge un número de fichas de colores,"
-			+ " 4 en el juego original, y pone un código secreto oculto del otro jugador."
-			+ " Este, tomando fichas de colores del mismo conjunto, aventura una posibilidad contestada con negras"
-			+ " (fichas de color y posicion correcto), blancas (fichas de color correcto en posicion incorrecta) y rojas(ficha de color incorrecto)";
+	Dificultad dificultad;
+	
 	/**
 	 * Construye un nuevo objeto Menu del que se obtienen el modo y la opcion
 	 */
 	Menu(){
 		
-		do {
-			System.out.println("  __  __           _            __  __ _           _ \r\n" + 
-					" |  \\/  |         | |          |  \\/  (_)         | |\r\n" + 
-					" | \\  / | __ _ ___| |_ ___ _ __| \\  / |_ _ __   __| |\r\n" + 
-					" | |\\/| |/ _` / __| __/ _ | '__| |\\/| | | '_ \\ / _` |\r\n" + 
-					" | |  | | (_| \\__ | ||  __| |  | |  | | | | | | (_| |\r\n" + 
-					" |_|  |_|\\__,_|___/\\__\\___|_|  |_|  |_|_|_| |_|\\__,_|");
-			
-			System.out.println(" 1. INSTRUCCIONES\n 2. INDIVIDUAL\n 3. EXPERTO\n 4. AUTOMATICO");
-			modo = Teclado.leerEntero();
-			
-		}while(modo>=5);
-		
-		if(modo==1) {
-			String.format("%s", instrucciones);
-		}else if(modo==2) {
-			
-			System.out.println("¿Quieres jugar o que juegue la maquina?:\n 1- Jugar 2- Maquina");
-			opcion = Teclado.leerEntero();
-			
-
-		}else if(modo == 3) {
-			System.out.println("¿Quien empezará a jugar?:\n 1- Jugador 2- Maquina");
-			opcion = Teclado.leerEntero();
-		}else {
-			System.out.println("Elige la velocidad del juego:\n 1- Lento 2- Rapido");
-			opcion = Teclado.leerEntero();
-		}
 	}
 	/**
 	 * Devuelve el número del modo 
@@ -96,23 +67,58 @@ public class Menu {
 	}
 
 
-	/**
-	 * Devuelve las instrucciones del juego
-	 * @return 	Las instrucciones especificadas en modo texto
-	 * @see instrucciones
-	 */
-	public String getInstrucciones() {
-		return instrucciones;
-	}
+	
+	public Partida configurarPartida() {
+		Partida partida = null;
+		Jugador jugador1, jugador2;
 
-	/**
-	 * Cambia las instrucciones
-	 * @param instrucciones Las instrucciones del juego
-	 * @see 	instrucciones
-	 */
+		System.out.println("  __  __           _            __  __ _           _ \r\n" + 
+					" |  \\/  |         | |          |  \\/  (_)         | |\r\n" + 
+					" | \\  / | __ _ ___| |_ ___ _ __| \\  / |_ _ __   __| |\r\n" + 
+					" | |\\/| |/ _` / __| __/ _ | '__| |\\/| | | '_ \\ / _` |\r\n" + 
+					" | |  | | (_| \\__ | ||  __| |  | |  | | | | | | (_| |\r\n" + 
+					" |_|  |_|\\__,_|___/\\__\\___|_|  |_|  |_|_|_| |_|\\__,_|");
+		
+		System.out.println();
+		System.out.println(" 1. INDIVIDUAL\n 2. EXPERTO\n 3. AUTOMATICO" );
 
-	public void setInstrucciones(String instrucciones) {
-		this.instrucciones = instrucciones;
+		
+		
+		switch(Teclado.rango(1, 3, Rango.AMBOS_INCLUIDOS)) {
+		case 1:
+			dificultad = Dificultad.INDIVIDUAL;
+			jugador1 = new Usuario(dificultad);
+			jugador2 = new Maquina(dificultad);
+			System.out.println("Modo Individual. \n¿Quién quieres que juegue?\n 1. Usuario\n 2. Máquina");
+			opcion = Teclado.rango(1, 2, Rango.AMBOS_INCLUIDOS);
+			
+			if(opcion == 1) {
+				partida = new Partida(dificultad, jugador1, jugador2);
+			}else {
+				partida = new Partida(dificultad, jugador2, jugador1);
+			}
+			break;
+		case 2:
+			dificultad = Dificultad.EXPERTO;
+			jugador1 = new Usuario(dificultad);
+			jugador2 = new Maquina(dificultad);
+			System.out.println("Modo Medio.");
+			
+			partida = new Partida(dificultad, jugador1,jugador2);
+			break;
+		case 3:
+			dificultad = Dificultad.AUTOMATICO;
+			jugador1 = new Maquina(dificultad);
+			jugador2 = new Maquina(dificultad);
+			System.out.println("Modo Dificil.");
+			
+			partida = new Partida(dificultad, jugador1,jugador2);
+			break;
+			
+		}
+		
+		return partida;
 	}
+	
 
 }

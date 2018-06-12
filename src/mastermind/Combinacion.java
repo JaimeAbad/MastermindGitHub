@@ -19,7 +19,8 @@ public class Combinacion implements Dibujable{
 	private Ficha f : instancia de la clase Ficha
 	Dificultad dificultad: almacena el modo (facil, medio o dificil)
 	 */
-	Ficha[] combinacion;
+	Ficha combinacion[];
+	protected int posicion = 0;
 	private Ficha f ;
 	Dificultad dificultad;
 	/**
@@ -28,7 +29,7 @@ public class Combinacion implements Dibujable{
 	 * @see #añadirFicha(int)
 	 * @see dibujar
 	 */
-	//Con # le podemos indicar un método
+	public //Con # le podemos indicar un método
 	Combinacion(Dificultad dificultad){
 		this.dificultad = dificultad;
 		combinacion = new Ficha[dificultad.getCasilla()];
@@ -45,13 +46,10 @@ public class Combinacion implements Dibujable{
 		Combinacion c = new Combinacion(dificultad);
 		boolean ocupada = false;
 		f = new Ficha(dificultad, color);
-		/*trampa para que no me devuelva el hashcode*/
-		//System.out.println(f.getColor());
 		
-		/*QUITAR EL FOR Y PASARLE EL ATRIBUTO POSICION, ASI SE AÑADE LA FICHA EN LA POSICION QUE LA PASAMOS,
-		YA QUE CON EL FOR SMP LA RECORRE IGUAL O EN LUGAR DE PASARLE A COMBINACION[i] PASARLE EL ATRIBUTO POSICION*/
-		for(int i=0;i<dificultad.getCasilla();i++) {//recorre la combinacion y donde no halla color lo añade
-			if(ocupada==false) {
+		
+		for(int i=0;i<dificultad.getCasilla();i++) {
+			if(!ocupada) {
 				combinacion[posicion] = f;
 				ocupada=true;
 			}
@@ -85,27 +83,38 @@ public class Combinacion implements Dibujable{
 			
 		}
 	}
-	
-	public static void main(String[] args) {
-		Dificultad dificultad  = Dificultad.INDIVIDUAL;
-		Combinacion c = new Combinacion(dificultad);
-		Combinacion c1 = new Combinacion(dificultad);
-		c.añadirFicha(1,0);
-		c.añadirFicha(2,1);
-		c.añadirFicha(3,2);
-		c.añadirFicha(4,3);
-		
-		c1.añadirFicha(0,0);
-		c1.añadirFicha(5,1);
-		c1.añadirFicha(6,2);
-		c1.añadirFicha(7,3);
-		c.dibujar();
-		System.out.println();
-		c1.dibujar();
-		
-		
-		
+	//hacer get de combinacion para no tener que estar accediendo con combinacion.combinacion[i]
+	public Ficha[] getCombinacion() {
+		return combinacion;
 	}
+
+	public void setCombinacion(Ficha[] combinacion) {
+		this.combinacion = combinacion;
+	}
+	
+//	public static void main(String[] args) {
+//		Dificultad dificultad  = Dificultad.INDIVIDUAL;
+//		Combinacion c = new Combinacion(dificultad);
+//		Combinacion c1 = new Combinacion(Dificultad.AUTOMATICO);
+//		c.añadirFicha(1,0);
+//		c.añadirFicha(2,1);
+//		c.añadirFicha(3,2);
+//		c.añadirFicha(4,3);
+//		
+//		c1.añadirFicha(1,0);
+//		c1.añadirFicha(5,1);
+//		c1.añadirFicha(6,2);
+//		c1.añadirFicha(7,3);
+//		c1.añadirFicha(9,4);
+//		c1.añadirFicha(5,5);
+//		c1.añadirFicha(6,6);
+//		c1.añadirFicha(7,7);
+//		c.dibujar();
+//		System.out.println();
+//		c1.dibujar();
+//	}
+
+
 
 
 }
