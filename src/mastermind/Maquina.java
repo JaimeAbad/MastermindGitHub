@@ -51,7 +51,6 @@ public class Maquina extends Jugador{
 	@Override
 	protected Combinacion crearCombinacionSecreta() {
 		int random;
-		boolean repetido = false;
 		Random rnd = new Random();
 		ArrayList<Integer> listaColorUtilizado= new ArrayList<Integer>();
 		Combinacion combinacionSecreta = new Combinacion(dificultad);
@@ -66,23 +65,21 @@ public class Maquina extends Jugador{
 			
 			
 		}else {
-			
-			for(int i=0; i<dificultad.getCasilla(); i++) {
-				
-				// COMO HACER PARA QUE NO SE REPITA UN RANDOM O PARA QUE CUANDO LO REPITA BUSQUE OTRO
-				do {
-					random = rnd.nextInt(dificultad.getColores());
-				
-					if(listaColorUtilizado.contains(random)) {
-						repetido = true;
-					}else{
-						listaColorUtilizado.add(random);
-						combinacionSecreta.añadirFicha(random,i);
-						mapaComparacion.put(i, random);
-					}
-				}while(!repetido);
+			for (int i = 0; i <4; i++) {
+		    	int aleatorio = 0;
+		    	boolean generado = false;
+		    	while (!generado) {
+		        	int posible = rnd.nextInt(8);
+		        	if (!listaColorUtilizado.contains(posible)) {
+		            	listaColorUtilizado.add(posible);
+		            	combinacionSecreta.añadirFicha(posible,i);
+						mapaComparacion.put(i, posible);
+		            	aleatorio = posible;
+		            	generado = true;
+		        	}
+		    	}
+		    	
 			}
-			
 		}
 		
 		return combinacionSecreta;
@@ -454,6 +451,13 @@ public class Maquina extends Jugador{
 //	for(int i =0 ; i<combinacionConvertida.size();i++) {
 //		System.out.printf("%d" ,combinacionConvertida.get(i));
 //	}
+
+		
+		
+		
+		
+
+		
 	
 }
 
